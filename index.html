@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#0a0c10" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#fbfbfd" media="(prefers-color-scheme: light)" />
+
+    <title>Rohit Kumar — Software Engineer</title>
+    <meta name="description" content="Rohit Kumar, Software Engineer at Infinite Locus. I build the parts of a product that are expensive to get wrong — payment flows, order pipelines and cross-platform sync. Four projects live with demo logins." />
+    <meta name="author" content="Rohit Kumar" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Rohit Kumar — Software Engineer" />
+    <meta property="og:description" content="Payment flows, order pipelines and cross-platform sync — the parts of a product that are expensive to get wrong. Four projects live with demo logins." />
+    <meta property="og:image" content="./og.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%237aa2f7'/%3E%3Ctext x='50' y='50' dy='.36em' text-anchor='middle' font-family='ui-monospace,monospace' font-weight='700' font-size='42' fill='%230a0c10'%3ERK%3C/text%3E%3C/svg%3E" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+
+    <script>
+      // Apply the saved theme before first paint so the page never flashes
+      // the wrong colours on reload.
+      try {
+        var t = localStorage.getItem('theme');
+        if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t;
+      } catch (e) {}
+    </script>
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Rohit Kumar",
+        "jobTitle": "Software Development Engineer",
+        "worksFor": { "@type": "Organization", "name": "Infinite Locus" },
+        "email": "rk8091267@gmail.com",
+        "alumniOf": { "@type": "CollegeOrUniversity", "name": "Indian Institute of Technology (BHU), Varanasi" },
+        "address": { "@type": "PostalAddress", "addressLocality": "Gurugram", "addressCountry": "IN" },
+        "knowsAbout": ["Distributed Systems", "Golang", "Python", "Kafka", "Redis", "AWS", "System Design"],
+        "sameAs": ["https://github.com/kumarrohitkumar"]
+      }
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <noscript>
+      <div style="padding:40px;font-family:system-ui;max-width:640px;margin:auto">
+        <h1>Rohit Kumar</h1>
+        <p>Backend and distributed systems engineer, Gurugram. This site needs
+        JavaScript. You can still reach me at
+        <a href="mailto:rk8091267@gmail.com">rk8091267@gmail.com</a> or download
+        <a href="./Rohit-Kumar-Resume.pdf">my resume</a>.</p>
+      </div>
+    </noscript>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

@@ -32,7 +32,12 @@ export const profile = {
   name: 'Rohit Kumar',
   role: 'Software Engineer',
   /** The strength, said once, without narrowing the role itself. */
-  roleSub: 'Backend & distributed systems · full-stack when it helps',
+  /**
+   * The hero card, under the name. It used to restate the last sentence of
+   * `intro`; the job and the employer are the one thing the hero never says.
+   * "since Jul 2025" rather than a tenure, so the line never goes stale.
+   */
+  roleSub: 'SDE I at Infinite Locus · since Jul 2025',
   roleLine: 'Software Development Engineer I at Infinite Locus',
   tagline: 'I build systems that do not lose your data.',
   intro:

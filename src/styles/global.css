@@ -1641,6 +1641,7 @@ code.ic {
   .cl,
   .shot-open,
   .shot-tabs button,
+  .rail-nav button,
   .hero-meta a,
   .contact-row,
   .live-chip,
@@ -2004,4 +2005,86 @@ code.ic {
   .reveal.in .ai-card,
   .reveal.in .service,
   .reveal.in .contact-row { animation: none !important; }
+}
+
+/* ============================================================================
+   Skills as a horizontal rail. Eight groups side by side: a third of the
+   height of the grid, and a native swipe on a phone.
+   ========================================================================= */
+.rail-wrap { position: relative; }
+
+.rail-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 14px;
+}
+.rail-hint {
+  font-family: var(--font-mono);
+  font-size: .72rem;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+.rail-nav { display: flex; gap: 7px; }
+.rail-nav button {
+  width: 34px; height: 34px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  background: var(--surface);
+  color: var(--text-dim);
+  cursor: pointer;
+  transition: color .2s, border-color .2s, transform .16s cubic-bezier(.34,1.56,.64,1), opacity .2s;
+}
+.rail-nav button:first-child svg { transform: rotate(90deg); }
+.rail-nav button:last-child svg { transform: rotate(-90deg); }
+.rail-nav button:hover:not(:disabled) { color: var(--accent); border-color: var(--accent); }
+.rail-nav button:active:not(:disabled) { transform: scale(.9); }
+.rail-nav button:disabled { opacity: .3; cursor: default; }
+
+.skill-rail {
+  display: flex;
+  gap: 14px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  scroll-padding-left: 2px;
+  /* Room for the cards' hover lift, which would otherwise be clipped. */
+  padding: 6px 2px 14px;
+  margin: -6px -2px -14px;
+  scrollbar-width: none;
+  /* A fade on whichever side still has cards, so there is always a cue that
+     the rail continues. */
+  mask-image: linear-gradient(90deg, transparent, #000 26px, #000 calc(100% - 46px), transparent);
+}
+.skill-rail::-webkit-scrollbar { display: none; }
+.skill-rail.at-start { mask-image: linear-gradient(90deg, #000 90%, transparent); }
+.skill-rail.at-end { mask-image: linear-gradient(90deg, transparent, #000 26px); }
+.skill-rail.at-start.at-end { mask-image: none; }
+.skill-rail:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; border-radius: var(--radius); }
+
+.skill-rail .skill-card {
+  flex: 0 0 clamp(250px, 27vw, 310px);
+  scroll-snap-align: start;
+  /* Flex already stretches every card to the tallest one, which is what makes
+     the rail read as a set. Adding a min-height on top only inflated it. */
+}
+
+@media (max-width: 560px) {
+  .skill-rail .skill-card { flex-basis: 82%; }
+  .rail-hint { font-size: .68rem; }
+}
+
+@media (hover: none) and (pointer: coarse) {
+  /* The shared touch rule sets a min-height; a circle needs the width to match. */
+  .rail-nav button { width: 44px; height: 44px; }
+}
+
+/* The deal-in animation already keys off --card-i; off-screen cards in the
+   rail should not burn their turn before anyone sees them. */
+@media (prefers-reduced-motion: reduce) {
+  .skill-rail { scroll-behavior: auto; }
 }

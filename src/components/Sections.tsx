@@ -414,22 +414,82 @@ export function Skills() {
       <Head
         eyebrow="Skills"
         title="The toolkit"
-        lead="Grouped by the layer they belong to rather than by how confident I feel about them."
+        lead="Grouped by the layer it belongs to rather than by how confident I feel about it. Scroll sideways, or use the arrows."
       />
-      <div className="skill-grid">
+      <SkillRail />
+    </Band>
+  )
+}
+
+/**
+ * The eight groups as a horizontal rail rather than a grid. It reads as one
+ * continuous toolkit instead of a wall, takes a third of the height, and on a
+ * phone it is a native swipe. Scroll snapping keeps a card aligned wherever
+ * the reader stops.
+ */
+function SkillRail() {
+  const railRef = useRef<HTMLDivElement>(null)
+  const [atStart, setAtStart] = useState(true)
+  const [atEnd, setAtEnd] = useState(false)
+
+  const sync = useCallback(() => {
+    const el = railRef.current
+    if (!el) return
+    // A pixel of slack: sub-pixel widths mean scrollLeft rarely hits the end
+    // exactly, and the arrow would stay enabled forever.
+    setAtStart(el.scrollLeft <= 1)
+    setAtEnd(el.scrollLeft >= el.scrollWidth - el.clientWidth - 1)
+  }, [])
+
+  useEffect(() => {
+    sync()
+    const el = railRef.current
+    if (!el) return undefined
+    const onResize = () => sync()
+    window.addEventListener('resize', onResize)
+    return () => window.removeEventListener('resize', onResize)
+  }, [sync])
+
+  const nudge = (direction: 1 | -1) => {
+    const el = railRef.current
+    if (!el) return
+    const card = el.querySelector<HTMLElement>('.skill-card')
+    // One card plus the gap, so a press always lands on a card edge.
+    const step = card ? card.offsetWidth + 14 : el.clientWidth * 0.8
+    el.scrollBy({ left: step * direction, behavior: 'smooth' })
+  }
+
+  return (
+    <div className="rail-wrap">
+      <div className="rail-head">
+        <span className="rail-hint">{skills.length} groups · scroll or swipe</span>
+        <div className="rail-nav">
+          <button onClick={() => nudge(-1)} disabled={atStart} aria-label="Previous skills">
+            <Chevron size={16} />
+          </button>
+          <button onClick={() => nudge(1)} disabled={atEnd} aria-label="More skills">
+            <Chevron size={16} />
+          </button>
+        </div>
+      </div>
+
+      <div
+        className={`skill-rail${atStart ? ' at-start' : ''}${atEnd ? ' at-end' : ''}`}
+        ref={railRef}
+        onScroll={sync}
+        tabIndex={0}
+        role="group"
+        aria-label="Skills, scrollable sideways"
+      >
         {skills.map((s, i) => (
-          <div
-            className={s.items.length > 12 ? 'skill-card skill-card-wide' : 'skill-card'}
-            key={s.group}
-            style={{ '--card-i': i } as CSSProperties}
-          >
+          <div className="skill-card" key={s.group} style={{ '--card-i': i } as CSSProperties}>
             <h3>{s.group}<span>{String(i + 1).padStart(2, '0')}</span></h3>
             <ul className="pills">
               {s.items.map((item, j) => (
                 <li
                   className="pill"
                   key={item}
-                  // Capped: a 20-item group should not still be dealing itself
+                  // Capped: a long group should not still be dealing itself
                   // out half a second after the card arrived.
                   style={{ '--pill-i': Math.min(j, 9) } as CSSProperties}
                 >
@@ -441,7 +501,7 @@ export function Skills() {
           </div>
         ))}
       </div>
-    </Band>
+    </div>
   )
 }
 

@@ -61,6 +61,9 @@ const MAP: Record<string, Icon | undefined> = {
   zod: si.siZod,
   vitest: si.siVitest,
   vercel: si.siVercel,
+  grafana: si.siGrafana,
+  prometheus: si.siPrometheus,
+  k6: si.siK6,
 }
 
 /**

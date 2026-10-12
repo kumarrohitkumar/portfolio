@@ -350,6 +350,41 @@ h1, h2, h3, h4 { line-height: 1.15; letter-spacing: -0.022em; font-weight: 640; 
 .contact-row .v { font-size: .93rem; font-weight: 520; word-break: break-all; }
 .contact-row .go { margin-left: auto; color: var(--text-faint); flex: none; }
 
+/* One primary action, then the address for people who keep their own client
+   open. The two together stand as tall as the three rows beside them. */
+.contact-cta { width: 100%; justify-content: center; padding-block: 15px; font-size: 1rem; }
+.contact-copy {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  margin-top: 10px;
+  padding: 13px 16px;
+  border: 1px dashed var(--border);
+  border-radius: var(--radius);
+  background: none;
+  cursor: pointer;
+  text-align: left;
+  transition: border-color .22s, background .22s;
+}
+.contact-copy:hover { border-color: var(--accent); background: var(--surface); }
+.contact-copy .k { font-size: .76rem; color: var(--text-faint); flex: none; }
+.contact-copy .v {
+  font-family: var(--font-mono); font-size: .82rem; color: var(--text);
+  min-width: 0; overflow-wrap: anywhere;
+}
+.contact-copy .go {
+  display: inline-flex; align-items: center; gap: 5px;
+  margin-left: auto; flex: none;
+  font-size: .78rem; font-weight: 560; color: var(--accent);
+}
+
+/* The address and its label will not share a line much under 560px. */
+@media (max-width: 560px) {
+  .contact-copy { flex-wrap: wrap; gap: 4px 12px; }
+  .contact-copy .k { width: 100%; }
+}
+
 .form { display: grid; gap: 14px; }
 .field { display: grid; gap: 7px; }
 .field label { font-size: .82rem; color: var(--text-dim); }

@@ -6,7 +6,7 @@ import {
 import type { Project } from '../data/profile'
 import { useCopy, useCountUp, useInView, usePrefersReducedMotion } from '../lib/hooks'
 import {
-  Arrow, Check, Chevron, External, Github, Linkedin, Mail, Star,
+  Arrow, Check, Chevron, Download, External, Github, Linkedin, Mail, Star,
 } from '../lib/icons'
 import { Logo } from '../lib/logos'
 import { Band, Chips, Head, Mark } from './Common'
@@ -631,29 +631,37 @@ function AchievementCard({ a, i }: { a: (typeof achievements)[number]; i: number
 export function Contact() {
   const { copied, copy } = useCopy()
   const hasLinkedin = !profile.linkedin.includes('REPLACE-ME')
+  // Only render the form when a service is actually wired up. Without one the
+  // right-hand column used to be a short card advertising a second mailto,
+  // which left a hole beside the links and three doors to the same inbox.
+  const hasForm = Boolean(profile.formEndpoint)
+  const subject = encodeURIComponent('Work enquiry for Rohit')
 
   return (
     <Band id="contact">
       <Head eyebrow="Contact" title="Let us talk" />
       <div className="contact-grid">
-        <div>
+        <div className="contact-main">
           <p className="contact-lead">
-            Hiring for a software engineering role, or need a service, a pipeline
-            or a migration built properly? Send a short note about the problem —
+            Hiring for a software engineering role, or need a pipeline or a
+            migration built properly? Send a short note about the problem —
             not the technology — and I will reply.
           </p>
 
-          <div className="contact-links">
-            <a className="contact-row" style={{ '--card-i': 0 } as CSSProperties} href={`mailto:${profile.email}`}>
-              <span className="ic"><Mail /></span>
-              <span>
-                <span className="k" style={{ display: 'block' }}>Email</span>
-                <span className="v">{profile.email}</span>
-              </span>
-              <span className="go"><Arrow size={16} /></span>
-            </a>
+          <a className="btn btn-primary contact-cta" href={`mailto:${profile.email}?subject=${subject}`}>
+            <Mail size={17} /> Write an email
+          </a>
 
-            <a className="contact-row" style={{ '--card-i': 1 } as CSSProperties} href={profile.github} target="_blank" rel="noreferrer">
+          <button className="contact-copy" onClick={() => copy(profile.email)}>
+            <span className="k">or copy the address</span>
+            <span className="v">{profile.email}</span>
+            <span className="go">{copied ? <><Check size={14} /> Copied</> : 'Copy'}</span>
+          </button>
+        </div>
+
+        {hasForm ? <ContactForm /> : (
+          <div className="contact-links">
+            <a className="contact-row" style={{ '--card-i': 0 } as CSSProperties} href={profile.github} target="_blank" rel="noreferrer">
               <span className="ic"><Github /></span>
               <span>
                 <span className="k" style={{ display: 'block' }}>GitHub</span>
@@ -663,7 +671,7 @@ export function Contact() {
             </a>
 
             {hasLinkedin && (
-              <a className="contact-row" style={{ '--card-i': 2 } as CSSProperties} href={profile.linkedin} target="_blank" rel="noreferrer">
+              <a className="contact-row" style={{ '--card-i': 1 } as CSSProperties} href={profile.linkedin} target="_blank" rel="noreferrer">
                 <span className="ic"><Linkedin /></span>
                 <span>
                   <span className="k" style={{ display: 'block' }}>LinkedIn</span>
@@ -672,14 +680,19 @@ export function Contact() {
                 <span className="go"><External size={15} /></span>
               </a>
             )}
+
+            {/* Third row, and the one a recruiter reaches for: it also squares
+                this column off against the button and the copy row opposite. */}
+            <a className="contact-row" style={{ '--card-i': 2 } as CSSProperties} href={profile.resume} download>
+              <span className="ic"><Download /></span>
+              <span>
+                <span className="k" style={{ display: 'block' }}>Resume</span>
+                <span className="v">Download the PDF</span>
+              </span>
+              <span className="go"><Arrow size={15} /></span>
+            </a>
           </div>
-
-          <button className="btn" style={{ marginTop: 14 }} onClick={() => copy(profile.email)}>
-            {copied ? <><Check size={16} /> Copied</> : 'Copy email address'}
-          </button>
-        </div>
-
-        <ContactForm />
+        )}
       </div>
     </Band>
   )

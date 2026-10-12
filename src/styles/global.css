@@ -204,24 +204,10 @@ h1, h2, h3, h4 { line-height: 1.15; letter-spacing: -0.022em; font-weight: 640; 
   opacity: .16; filter: blur(26px);
 }
 
-/* -------------------------------------------------------------------- about */
-.about-grid { display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr); gap: clamp(30px, 5vw, 62px); }
-.about-copy p { color: var(--text-dim); margin-bottom: 17px; font-size: 1.02rem; }
-.about-copy p:last-child { margin-bottom: 0; }
-.about-copy .hl { color: var(--text); font-weight: 600; }
-
 .card {
   border: 1px solid var(--border); border-radius: var(--radius);
   background: var(--surface); padding: 22px;
 }
-.fact-list li {
-  display: flex; justify-content: space-between; gap: 16px;
-  padding: 11px 0; border-bottom: 1px solid var(--border); font-size: .9rem;
-}
-.fact-list li:last-child { border-bottom: 0; }
-.fact-list dt, .fact-list .k { color: var(--text-faint); }
-.fact-list .v { color: var(--text); text-align: right; font-weight: 520; }
-
 /* --------------------------------------------------------------- experience */
 .timeline { display: grid; gap: 22px; }
 .job {
@@ -334,21 +320,12 @@ h1, h2, h3, h4 { line-height: 1.15; letter-spacing: -0.022em; font-weight: 640; 
 
 /* ----------------------------------------------------------------- services */
 
-/* -------------------------------------------------- education + achievements */
-.two-col { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: clamp(28px, 5vw, 56px); }
-.edu { display: grid; gap: 16px; }
-.edu-item {
-  border-left: 2px solid var(--border); padding: 4px 0 4px 20px; position: relative;
-}
-.edu-item::before {
-  content: ''; position: absolute; left: -5px; top: 12px; width: 8px; height: 8px;
-  border-radius: 50%; background: var(--accent); border: 2px solid var(--bg);
-}
-.edu-item h3 { font-size: 1.02rem; margin-bottom: 3px; }
-.edu-item .q { color: var(--text-dim); font-size: .93rem; }
-.edu-item .m { font-family: var(--font-mono); font-size: .75rem; color: var(--text-faint); margin-top: 5px; }
-
+/* -------------------------------------------------------------- achievements */
 .ach { display: grid; gap: 11px; }
+/* Two per row keeps the four cards as a block rather than a row of three and
+   an orphan, and leaves each one wide enough for its line of detail. */
+.ach-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+@media (max-width: 760px) { .ach-grid { grid-template-columns: minmax(0, 1fr); } }
 .ach-item {
   display: flex; gap: 13px; align-items: flex-start;
   border: 1px solid var(--border); border-radius: var(--radius-sm);
@@ -813,12 +790,8 @@ section.band { padding-block: clamp(42px, 5.4vw, 70px); }
   halving the scroll.
 */
 
-/* About: four paragraphs of prose do not need 18px line-height at 1.9. */
-.about-copy p { font-size: .98rem; line-height: 1.68; margin-bottom: 14px; }
-.about-grid { gap: clamp(22px, 3.5vw, 44px); }
-
-/* Education, achievements and contact were mostly padding. */
-.edu-item, .ach-item { padding-block: 15px; }
+/* Achievements and contact were mostly padding. */
+.ach-item { padding-block: 15px; }
 .contact-grid { gap: 16px; }
 .contact-card { padding: 20px; }
 
@@ -854,8 +827,7 @@ section.band { padding-block: clamp(42px, 5.4vw, 70px); }
      the drawer behind the menu button. */.nav { display: none; }.menu-btn { display: grid; }.drawer { display: block; animation: rk-fade-up .26s var(--ease) both; }.header-inner { gap: 12px; }.header-actions { margin-left: auto; }
 }
 
-@media (max-width: 760px) {/* Two lines of brand text crowd the bar once the menu button is there. */.brand-sub { display: none; }.header-actions .btn-ghost { display: none; }.hero .metrics { grid-template-columns: 1fr 1fr; }.marquee-run i { margin: 0 14px; }/* One column: the prose first, the fact card under it at full width. */
-  .about-grid { grid-template-columns: minmax(0, 1fr); }.fact-list li { font-size: .92rem; }/* Contact: the links column was 160px wide, breaking the email and the
+@media (max-width: 760px) {/* Two lines of brand text crowd the bar once the menu button is there. */.brand-sub { display: none; }.header-actions .btn-ghost { display: none; }.hero .metrics { grid-template-columns: 1fr 1fr; }.marquee-run i { margin: 0 14px; }/* Contact: the links column was 160px wide, breaking the email and the
      profile URLs mid-word and clipping the "Write an email" button. */
   .contact-grid { grid-template-columns: minmax(0, 1fr); }.contact-row .v { word-break: normal; overflow-wrap: anywhere; }
 }
@@ -1124,58 +1096,7 @@ html, body { overflow-x: clip; max-width: 100%; }
 @media (max-width: 860px)  {.skill-grid { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 560px)  {.skill-grid { grid-template-columns: 1fr; } }
 
-/* ------------------------------------------------------- education crests */
-.edu-item {
-  display: flex;
-  align-items: flex-start;
-  gap: 14px;
-  padding-block: 15px;
-}
-.edu-crest {
-  flex: none;
-  display: grid;
-  place-items: center;
-  width: 48px; height: 48px;
-  padding: 5px;
-  border-radius: 12px;
-  border: 1px solid var(--border);
-  /* These emblems are drawn for paper — maroon and green on white. A light
-     tile keeps them legible in the dark theme, the way a job board does it. */
-  background: #fff;
-  overflow: hidden;
-  transition: transform .26s var(--ease), border-color .26s, box-shadow .26s;
-}
-.edu-crest img { width: 100%; height: 100%; object-fit: contain; display: block; }
-.edu-item:hover .edu-crest { box-shadow: 0 6px 16px -8px rgba(0,0,0,.6); }
-.edu-item:hover .edu-crest { transform: translateY(-2px) scale(1.04); border-color: var(--accent); }
-.edu-body { min-width: 0; }
-.edu-body h3 {
-  display: flex;
-  align-items: baseline;
-  gap: 9px;
-  flex-wrap: wrap;
-  font-size: .97rem;
-  line-height: 1.35;
-}
-.edu-short {
-  font-family: var(--font-mono);
-  font-size: .68rem;
-  color: var(--accent);
-  border: 1px solid color-mix(in srgb, var(--accent) 28%, transparent);
-  background: var(--accent-soft);
-  border-radius: 99px;
-  padding: 2px 8px;
-  flex: none;
-}
-.reveal.in .edu-item {
-  animation: rk-fade-up .45s var(--ease) both;
-  animation-delay: calc(var(--card-i, 0) * 80ms);
-}
-
 /* ------------------------------------------------------------- WhatsApp */
-
-@media (prefers-reduced-motion: reduce) {.reveal.in .edu-item { animation: none !important; }
-}
 
 /* Inline code inside prose — identifiers, not quotations. */
 code.ic {
@@ -1195,6 +1116,18 @@ code.ic {
   transition: transform .35s var(--ease), border-color .35s var(--ease), box-shadow .35s var(--ease);
 }
 .ach-item:hover { transform: translateY(-2px); border-color: color-mix(in srgb, var(--accent) 45%, var(--border)); box-shadow: 0 10px 30px -18px color-mix(in srgb, var(--accent) 60%, transparent); }
+/* The linked cards: an arrow that only shows up once the card is pointed at,
+   so a static screenshot stays as quiet as the unlinked ones. */
+.ach-link { color: inherit; text-decoration: none; }
+.ach-go {
+  flex: none; display: grid; place-items: center;
+  width: 24px; height: 24px; margin-left: 2px;
+  color: var(--text-faint);
+  opacity: 0; transform: translateX(-4px);
+  transition: opacity .25s var(--ease), transform .25s var(--ease), color .25s;
+}
+.ach-link:hover .ach-go, .ach-link:focus-visible .ach-go { opacity: 1; transform: none; color: var(--accent); }
+@media (hover: none) and (pointer: coarse) { .ach-go { opacity: 1; transform: none; } }
 .ach-marks { display: flex; flex: none; }
 .ach-mark {
   display: grid; place-items: center; width: 40px; height: 40px; border-radius: 11px;
@@ -1261,7 +1194,7 @@ code.ic {
 }
 
 /* Comfortable reading measure on a narrow screen. */
-@media (max-width: 480px) {.project p, .about-copy p {
+@media (max-width: 480px) {.project p {
     font-size: .92rem;
     line-height: 1.62;
   }.section-head p { font-size: .94rem; }
@@ -1825,78 +1758,4 @@ code.ic {
 }
 
 @media (prefers-reduced-motion: reduce) {.reveal.in .system, .reveal.in .systems-head { animation: none !important; }
-}
-
-/* ============================================================================
-   About: each paragraph makes a claim, and the claim opens to the work that
-   backs it. The section was 177 words with one thing to click.
-   ========================================================================= */
-.claim + .claim { margin-top: 20px; }
-.claim > p { margin: 0; }
-
-.claim-toggle {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  margin-top: 9px;
-  padding: 0;
-  background: none;
-  border: 0;
-  cursor: pointer;
-  font-size: .82rem;
-  font-weight: 500;
-  color: var(--text-faint);
-  transition: color .2s;
-}
-.claim-toggle:hover { color: var(--accent); }
-.claim-toggle svg { transition: transform .25s var(--ease); }
-.claim-toggle[aria-expanded='true'] { color: var(--accent); }
-.claim-toggle[aria-expanded='true'] svg { transform: rotate(180deg); }
-
-/* A small mark that fills in when the proof is open. */
-.claim-dot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  border: 1px solid currentColor;
-  flex: none;
-  transition: background .25s;
-}
-.claim-toggle[aria-expanded='true'] .claim-dot { background: var(--accent); }
-
-.claim-proof {
-  margin-top: 11px;
-  padding: 14px 16px;
-  border: 1px solid var(--border);
-  border-left: 2px solid var(--accent);
-  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
-  background: var(--surface);
-  animation: rk-fade-up .32s var(--ease) both;
-}
-/* Direct child only: `Mark` emits <strong> inside the paragraph too, and a
-   block there split sentences across three lines. */
-.claim-proof > strong {
-  display: block;
-  font-size: .9rem;
-  letter-spacing: -.01em;
-  margin-bottom: 6px;
-}
-.claim-proof p {
-  font-size: .88rem;
-  line-height: 1.58;
-  color: var(--text-dim);
-  margin: 0 0 10px;
-}
-.claim-proof .link-inline { font-size: .82rem; }
-
-.reveal.in .claim {
-  animation: rk-fade-up .45s var(--ease) both;
-  animation-delay: calc(var(--claim-i, 0) * 90ms);
-}
-
-@media (hover: none) and (pointer: coarse) {
-  .claim-toggle { min-height: 44px; }
-}
-@media (prefers-reduced-motion: reduce) {
-  .reveal.in .claim, .claim-proof { animation: none !important; }
 }

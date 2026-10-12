@@ -2,8 +2,7 @@ import { useEffect } from 'react'
 import { Header } from './components/Header'
 import { Hero } from './components/Hero'
 import {
-  About, Background, Contact, Experience, Footer, Projects,
-  Skills,
+  Background, Contact, Experience, Footer, Projects, Skills,
 } from './components/Sections'
 import { useCardGlow, useScrollProgress, useScrolledPast, useTheme } from './lib/hooks'
 import { ArrowUp } from './lib/icons'
@@ -23,7 +22,6 @@ export default function App() {
       <Header theme={theme} onToggleTheme={toggle} />
       <main>
         <Hero />
-        <About />
         <Experience />
         <Projects />
         <Skills />

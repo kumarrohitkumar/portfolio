@@ -65,67 +65,6 @@ export const profile = {
    * the endpoint here, e.g. 'https://formspree.io/f/abcdwxyz'.
    */
   formEndpoint: '',
-
-  // ------------------------------------------------------------------- about
-  /**
-   * Kept deliberately short. The projects, the stack, the degree and the ratings
-   * all have their own sections further down — repeating them here would waste
-   * the one place on the page where I get to say how I think.
-   */
-  /**
-   * Each paragraph makes a claim, and each claim can be opened to the work
-   * that backs it. An assertion nobody can check is just a nice sentence.
-   */
-  about: [
-    {
-      text:
-        'I build the parts of a system where a mistake costs money — real orders, ' +
-        'real stock, real payments. A duplicate payment is not a bug report; it is ' +
-        'somebody in finance losing a week. **Idempotency, retries and audit trails ' +
-        'go in from the first line, not after the first incident.**',
-      proof: {
-        title: '32M-record canonical merge',
-        detail:
-          'De-duplicated the production store master in four idempotent, restartable ' +
-          'phases — **zero rows lost**, every change audited, and one click to roll ' +
-          'the whole thing back.',
-        to: '#experience',
-        cta: 'See it in Experience',
-      },
-    },
-    {
-      text:
-        'The work I like is the unglamorous middle: the consumer that must not ' +
-        'double-process, the migration that must be reversible. **Owning a system ' +
-        'after it ships is what taught me how to design one.**',
-      proof: {
-        title: 'Cross-platform sync pipeline',
-        detail:
-          'Two platforms that both accept writes and must agree. Kafka consumers ' +
-          'with **idempotency keys** and a sync-state record per event, so a replay ' +
-          'is safe and anything missed can be re-fired. I designed it, shipped it, ' +
-          'and carry the pager for it.',
-        to: '#experience',
-        cta: 'See it in Experience',
-      },
-    },
-    {
-      text:
-        'Most of my depth is on the server, but I do not stop at the API boundary — ' +
-        'I build the interface when a feature needs one. Lately the same discipline ' +
-        'has gone into LLM agents: tools and guardrails in code, and **evals, so a ' +
-        'change is a measurement and not a feeling.**',
-      proof: {
-        title: 'Isaa, inside Finishh Club',
-        detail:
-          'A tool-calling agent with no framework. Numbers come only from SQL tools, ' +
-          'never from retrieval, and an **eval suite caught fabricated fund metrics ' +
-          'before release**. 82 tests behind it.',
-        to: '#projects',
-        cta: 'Open the case study',
-      },
-    },
-  ],
 } as const
 
 /**
@@ -456,7 +395,7 @@ export const projects: Project[] = [
       '**Secured an insecure app.** Rebuilt the API with role and ownership checks ' +
         'on every route. Before: any seeker could post jobs and read others’ ' +
         'applicants, and **password hashes leaked in API responses**.',
-      '**Safe uploads.** Résumés checked by their **bytes**, not the filename, and ' +
+      '**Safe uploads.** Resumes checked by their **bytes**, not the filename, and ' +
         'stored in private S3 behind links that expire in an hour.',
       '**Sessions that cannot go stale.** The signed-in user always comes from the ' +
         'server, replacing a cache that kept expired logins looking valid. Code ' +
@@ -537,44 +476,6 @@ export const skills = [
   { group: 'Retrieval & Evals', items: ['RAG', 'Vector Databases', 'pgvector', 'Embeddings', 'Semantic Search', 'Chunking Strategies', 'Guardrails', 'LLM Evals', 'Hallucination Testing'] },
   { group: 'Engineering',      items: ['Distributed systems', 'System design (HLD/LLD)', 'Idempotency & exactly-once', 'Saga / compensating rollback', 'Data migrations', 'Testing & CI', 'OOP', 'DBMS', 'Computer networks', 'DSA'] },
 ]
-
-// ------------------------------------------------------------------ education
-/**
- * `logo` is each institution's own emblem, bundled under public/logos/ rather
- * than hotlinked, so nothing breaks if the source moves. They are the
- * institutions' trademarks, shown here only to identify where I studied.
- * `mark` is a drawn fallback (src/lib/crests.tsx) if an image fails to load.
- */
-export const education = [
-  {
-    logo: 'logos/iit-bhu.png',
-    mark: 'iitbhu' as const,
-    short: 'IIT (BHU)',
-    school: 'Indian Institute of Technology (BHU), Varanasi',
-    qualification: 'Bachelor of Technology, Chemical Engineering',
-    period: 'Aug 2021 — May 2025',
-    place: 'Varanasi, Uttar Pradesh',
-  },
-  {
-    logo: 'logos/jnv.png',
-    mark: 'jnv' as const,
-    short: 'JNV Prayagraj',
-    school: 'Jawahar Navodaya Vidyalaya, Prayagraj',
-    qualification: 'Senior Secondary, Class 11 to 12',
-    period: '2020 — 2021',
-    place: 'Prayagraj, Uttar Pradesh',
-  },
-  {
-    logo: 'logos/jnv.png',
-    mark: 'jnv' as const,
-    short: 'JNV Bharatpur',
-    school: 'Jawahar Navodaya Vidyalaya, Bharatpur',
-    qualification: 'Secondary, Class 6 to 10',
-    period: '2014 — 2019',
-    place: 'Bharatpur, Rajasthan',
-  },
-]
-
 // --------------------------------------------------------------- achievements
 // `logos` are brand marks shown on the card; `stat` counts up when the card scrolls in.
 export const achievements: {
@@ -582,18 +483,22 @@ export const achievements: {
   detail: string
   logos: string[]
   stat?: { value: number; suffix?: string; label: string }
+  /** A rating is only worth printing if the reader can go and check it. */
+  href?: string
 }[] = [
   {
     title: 'Codeforces Specialist',
     detail: 'Maximum rating 1403.',
     logos: ['Codeforces'],
     stat: { value: 1403, label: 'max rating' },
+    href: profile.codeforces,
   },
   {
     title: 'LeetCode Knight',
     detail: 'Maximum rating above 2100.',
     logos: ['LeetCode'],
     stat: { value: 2100, suffix: '+', label: 'max rating' },
+    href: profile.leetcode,
   },
   {
     title: '1500+ problems solved',
@@ -609,7 +514,6 @@ export const achievements: {
 ]
 
 export const nav = [
-  { id: 'about',       label: 'About' },
   { id: 'experience',  label: 'Experience' },
   { id: 'projects',    label: 'Projects' },
   { id: 'skills',      label: 'Skills' },

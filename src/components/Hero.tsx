@@ -71,7 +71,7 @@ export function Hero() {
               See the work <Arrow size={16} />
             </a>
             <a className="btn" href={profile.resume} download>
-              <Download size={16} /> Résumé
+              <Download size={16} /> Resume
             </a>
             <a className="btn btn-icon" href={profile.github} target="_blank" rel="noreferrer" aria-label="GitHub">
               <Github size={17} />

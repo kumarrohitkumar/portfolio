@@ -1,74 +1,15 @@
 import type { CSSProperties } from 'react'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import {
-  achievements, education, experience, profile, projects, skills,
+  achievements, experience, profile, projects, skills,
 } from '../data/profile'
 import type { Project } from '../data/profile'
 import { useCopy, useCountUp, useInView, usePrefersReducedMotion } from '../lib/hooks'
 import {
   Arrow, Check, Chevron, External, Github, Linkedin, Mail, Star,
 } from '../lib/icons'
-import { Crest } from '../lib/crests'
 import { Logo } from '../lib/logos'
 import { Band, Chips, Head, Mark } from './Common'
-
-/* ------------------------------------------------------------------- about */
-export function About() {
-  return (
-    <Band id="about">
-      <Head eyebrow="About" title="What I work on, and how I work" />
-      <div className="about-grid">
-        <div className="about-copy">
-          {profile.about.map((para, i) => <AboutClaim key={i} para={para} index={i} />)}
-        </div>
-        <aside className="card">
-          <ul className="fact-list">
-            <li><span className="k">Role</span><span className="v">SDE I, Infinite Locus</span></li>
-            <li><span className="k">Based in</span><span className="v">{profile.location}</span></li>
-            <li><span className="k">From</span><span className="v">{profile.hometown}</span></li>
-            <li><span className="k">Degree</span><span className="v">B.Tech, IIT (BHU) Varanasi</span></li>
-            <li><span className="k">Focus</span><span className="v">Backend, distributed systems</span></li>
-            <li><span className="k">Main stack</span><span className="v">Go · Python · Node · Kafka</span></li>
-          </ul>
-          <a className="btn" href="#contact" style={{ width: '100%', marginTop: 18 }}>
-            Get in touch <Arrow size={16} />
-          </a>
-        </aside>
-      </div>
-    </Band>
-  )
-}
-
-/**
- * A paragraph and the work that backs its claim. The proof is one click away
- * rather than on the page by default — the point is that it can be checked,
- * not that everyone reads it.
- */
-function AboutClaim({ para, index }: { para: (typeof profile.about)[number]; index: number }) {
-  const [open, setOpen] = useState(false)
-
-  return (
-    <div className="claim" style={{ '--claim-i': index } as CSSProperties}>
-      <p><Mark text={para.text} /></p>
-
-      <button className="claim-toggle" onClick={() => setOpen(o => !o)} aria-expanded={open}>
-        <span className="claim-dot" aria-hidden="true" />
-        {open ? 'Hide the proof' : 'Where this shows up'}
-        <Chevron size={13} />
-      </button>
-
-      {open && (
-        <div className="claim-proof">
-          <strong>{para.proof.title}</strong>
-          <p><Mark text={para.proof.detail} /></p>
-          <a className="link-inline" href={para.proof.to}>
-            {para.proof.cta} <Arrow size={13} />
-          </a>
-        </div>
-      )}
-    </div>
-  )
-}
 
 /* -------------------------------------------------------------- experience */
 export function Experience() {
@@ -628,42 +569,19 @@ function SkillRail() {
   )
 }
 
-/* ------------------------------------------------ education + achievements */
+/* -------------------------------------------------------------- achievements */
 export function Background() {
   return (
     <Band>
-      <div className="two-col">
-        <div>
-          <Head eyebrow="Education" title="Where I studied" />
-          <div className="edu">
-            {education.map((e, i) => (
-              <div
-                className="edu-item"
-                key={e.school}
-                style={{ '--card-i': i } as CSSProperties}
-              >
-                <EduLogo entry={e} />
-                <div className="edu-body">
-                  <h3>
-                    {e.school}
-                    <span className="edu-short">{e.short}</span>
-                  </h3>
-                  <p className="q">{e.qualification}</p>
-                  <p className="m">{e.period} · {e.place}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        <div>
-          <Head eyebrow="Achievements" title="Problem solving" />
-          <div className="ach">
-            {achievements.map((a, i) => (
-              <AchievementCard key={a.title} a={a} i={i} />
-            ))}
-          </div>
-        </div>
+      <Head
+        eyebrow="Achievements"
+        title="Problem solving"
+        lead="Ratings and counts, not adjectives. Open a card to check the profile."
+      />
+      <div className="ach ach-grid">
+        {achievements.map((a, i) => (
+          <AchievementCard key={a.title} a={a} i={i} />
+        ))}
       </div>
     </Band>
   )
@@ -672,8 +590,17 @@ export function Background() {
 /** One achievement: brand marks, the claim, and a number that counts up as it appears. */
 function AchievementCard({ a, i }: { a: (typeof achievements)[number]; i: number }) {
   const { ref, value } = useCountUp<HTMLSpanElement>(a.stat?.value ?? 0)
+  // Where there is a public profile the whole card opens it; the rest stay
+  // plain, so a cursor never promises a link that is not there.
+  const Tag = a.href ? 'a' : 'div'
+  const linkProps = a.href ? { href: a.href, target: '_blank', rel: 'noreferrer' } : {}
+
   return (
-    <div className="ach-item" style={{ '--card-i': i } as CSSProperties}>
+    <Tag
+      className={a.href ? 'ach-item ach-link' : 'ach-item'}
+      style={{ '--card-i': i } as CSSProperties}
+      {...linkProps}
+    >
       <span className={`ach-marks${a.logos.length > 1 ? ' stack' : ''}`} aria-hidden="true">
         {a.logos.length ? (
           a.logos.map(l => (
@@ -695,33 +622,8 @@ function AchievementCard({ a, i }: { a: (typeof achievements)[number]; i: number
           <small>{a.stat.label}</small>
         </span>
       )}
-    </div>
-  )
-}
-
-/**
- * The institution's own emblem, with the drawn crest as a fallback so a
- * missing file never leaves an empty square.
- */
-function EduLogo({ entry }: { entry: { logo: string; mark: 'iitbhu' | 'jnv'; school: string } }) {
-  const [failed, setFailed] = useState(false)
-
-  return (
-    <span className="edu-crest">
-      {failed ? (
-        <Crest mark={entry.mark} size={40} />
-      ) : (
-        <img
-          src={entry.logo}
-          alt={`${entry.school} emblem`}
-          width={40}
-          height={40}
-          loading="lazy"
-          decoding="async"
-          onError={() => setFailed(true)}
-        />
-      )}
-    </span>
+      {a.href && <span className="ach-go" aria-hidden="true"><External size={14} /></span>}
+    </Tag>
   )
 }
 

@@ -46,11 +46,6 @@ export const profile = {
 
   // ------------------------------------------------------------------- links
   email: 'rk8091267@gmail.com',
-  phone: '+91 8003133605',
-  /** wa.me wants the number with no +, spaces or dashes. */
-  get whatsapp() {
-    return `https://wa.me/${this.phone.replace(/\D/g, '')}`
-  },
   github: 'https://github.com/kumarrohitkumar',
   // All three were read out of the link annotations in Rohit-Kumar-Resume.pdf.
   linkedin: 'https://www.linkedin.com/in/rohit-kumar-02764520b',
@@ -490,7 +485,7 @@ export const aiEngineering = {
   heading: 'Learning agents by building them',
   lead:
     'Learned by building, then measuring. All of it exists in code I wrote — ' +
-    'mostly Isaa, the assistant inside Finishh Club. None of it from a course.',
+    'mostly Isaa, the assistant inside Finishh Club.',
 
   groups: [
     {

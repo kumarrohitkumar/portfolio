@@ -91,7 +91,6 @@ body {
   line-height: 1.65;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
-  overflow-x: hidden;
   transition: background var(--fast) linear, color var(--fast) linear;
 }
 
@@ -1108,20 +1107,29 @@ section.band { padding-block: clamp(42px, 5.4vw, 70px); }
   .header-actions .btn-ghost { display: none; }
   .hero .metrics { grid-template-columns: 1fr 1fr; }
   .marquee-run i { margin: 0 14px; }
+  /* One column: the prose first, the fact card under it at full width. */
+  .about-grid { grid-template-columns: minmax(0, 1fr); }
+  .fact-list li { font-size: .92rem; }
+  /* Contact: the links column was 160px wide, breaking the email and the
+     profile URLs mid-word and clipping the "Write an email" button. */
+  .contact-grid { grid-template-columns: minmax(0, 1fr); }
+  .contact-row .v { word-break: normal; overflow-wrap: anywhere; }
 }
 
 @media (max-width: 560px) {
   .hero-title { font-size: clamp(1.9rem, 9vw, 2.5rem); }
   .hero-actions { gap: 8px; }
   .hero-actions .btn { flex: 1 1 auto; justify-content: center; }
+  .hero-actions .btn-primary { flex: 1 1 100%; }
   .hero-actions .btn-icon { flex: 0 0 auto; }
   .terminal-body { font-size: .72rem; }
   .filters { overflow-x: auto; flex-wrap: nowrap; padding-bottom: 4px; }
   .filter { flex: none; }
 }
 
-/* Nothing should ever scroll sideways. */
-html, body { overflow-x: hidden; max-width: 100%; }
+/* Nothing should ever scroll sideways. `clip` (not `hidden`): `hidden` on
+   body makes it a scroll container, which breaks the sticky header. */
+html, body { overflow-x: clip; max-width: 100%; }
 
 /* ---------------------------------------------------------------- print */
 @media print {
@@ -1533,8 +1541,6 @@ html, body { overflow-x: hidden; max-width: 100%; }
 }
 
 /* ------------------------------------------------------------- WhatsApp */
-.contact-row-wa .ic { color: #25d366; }
-.contact-row-wa:hover { border-color: #25d366; }
 
 @media (prefers-reduced-motion: reduce) {
   .reveal.in .edu-item { animation: none !important; }

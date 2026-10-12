@@ -6,7 +6,7 @@ import {
 import type { Project } from '../data/profile'
 import { useCopy, useCountUp, useInView, usePrefersReducedMotion, useReveal } from '../lib/hooks'
 import {
-  Arrow, Check, Chevron, External, Github, Linkedin, Mail, Phone, Star, Whatsapp,
+  Arrow, Check, Chevron, External, Github, Linkedin, Mail, Star,
 } from '../lib/icons'
 import { Crest } from '../lib/crests'
 import { Logo } from '../lib/logos'
@@ -625,31 +625,7 @@ export function Contact() {
               <span className="go"><Arrow size={16} /></span>
             </a>
 
-            <a
-              className="contact-row contact-row-wa"
-              style={{ '--card-i': 1 } as CSSProperties}
-              href={profile.whatsapp}
-              target="_blank"
-              rel="noreferrer"
-            >
-              <span className="ic"><Whatsapp /></span>
-              <span>
-                <span className="k" style={{ display: 'block' }}>WhatsApp</span>
-                <span className="v">{profile.phone}</span>
-              </span>
-              <span className="go"><External size={15} /></span>
-            </a>
-
-            <a className="contact-row" style={{ '--card-i': 2 } as CSSProperties} href={`tel:${profile.phone.replace(/\s/g, '')}`}>
-              <span className="ic"><Phone /></span>
-              <span>
-                <span className="k" style={{ display: 'block' }}>Call</span>
-                <span className="v">{profile.phone}</span>
-              </span>
-              <span className="go"><Arrow size={16} /></span>
-            </a>
-
-            <a className="contact-row" style={{ '--card-i': 3 } as CSSProperties} href={profile.github} target="_blank" rel="noreferrer">
+            <a className="contact-row" style={{ '--card-i': 1 } as CSSProperties} href={profile.github} target="_blank" rel="noreferrer">
               <span className="ic"><Github /></span>
               <span>
                 <span className="k" style={{ display: 'block' }}>GitHub</span>
@@ -659,7 +635,7 @@ export function Contact() {
             </a>
 
             {hasLinkedin && (
-              <a className="contact-row" style={{ '--card-i': 4 } as CSSProperties} href={profile.linkedin} target="_blank" rel="noreferrer">
+              <a className="contact-row" style={{ '--card-i': 2 } as CSSProperties} href={profile.linkedin} target="_blank" rel="noreferrer">
                 <span className="ic"><Linkedin /></span>
                 <span>
                   <span className="k" style={{ display: 'block' }}>LinkedIn</span>
@@ -701,9 +677,6 @@ function ContactForm() {
         >
           <Mail size={16} /> Write an email
         </a>
-        <p className="form-note" style={{ marginTop: 14 }}>
-          I read every message and reply myself.
-        </p>
       </div>
     )
   }
@@ -733,7 +706,7 @@ export function Footer() {
   return (
     <footer className="footer">
       <div className="wrap footer-inner">
-        <p>© {new Date().getFullYear()} {profile.name} · Built with React and plain CSS.</p>
+        <p>© {new Date().getFullYear()} {profile.name}</p>
         <nav aria-label="Footer">
           <a href="#top">Top</a>
           <a href={profile.resume} download>Resume</a>

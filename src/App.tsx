@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import { Header } from './components/Header'
 import { Hero } from './components/Hero'
 import {
-  About, AIEngineering, Background, Contact, Experience, Footer, Projects, Services,
+  About, Background, Contact, Experience, Footer, Projects, Services,
   Skills,
 } from './components/Sections'
 import { useCardGlow, useScrollProgress, useScrolledPast, useTheme } from './lib/hooks'
@@ -26,7 +26,6 @@ export default function App() {
         <About />
         <Experience />
         <Projects />
-        <AIEngineering />
         <Skills />
         <Services />
         <Background />

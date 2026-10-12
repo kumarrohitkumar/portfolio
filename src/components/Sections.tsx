@@ -1,10 +1,10 @@
-import type { CSSProperties, ReactNode } from 'react'
+import type { CSSProperties } from 'react'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import {
-  achievements, aiEngineering, education, experience, profile, projects, services, skills,
+  achievements, education, experience, profile, projects, services, skills,
 } from '../data/profile'
 import type { Project } from '../data/profile'
-import { useCopy, useCountUp, useInView, usePrefersReducedMotion, useReveal } from '../lib/hooks'
+import { useCopy, useCountUp, useInView, usePrefersReducedMotion } from '../lib/hooks'
 import {
   Arrow, Check, Chevron, External, Github, Linkedin, Mail, Star,
 } from '../lib/icons'
@@ -41,6 +41,11 @@ export function About() {
 
 /* -------------------------------------------------------------- experience */
 export function Experience() {
+  // The four systems live in `projects` tagged 'Work'. They used to be
+  // written out again as bullets here, which meant the same four systems
+  // appeared twice on the page saying the same things.
+  const work = projects.filter(p => p.tags.includes('Work'))
+
   return (
     <Band id="experience">
       <Head
@@ -51,7 +56,6 @@ export function Experience() {
       <div className="timeline">
         {experience.map((job, j) => (
           <article className="job" key={job.company} style={{ '--job-i': j } as CSSProperties}>
-            {/* The marker the spine runs through. */}
             <span className="job-dot" aria-hidden="true" />
 
             <div className="job-top">
@@ -61,20 +65,95 @@ export function Experience() {
             </div>
             <p className="job-place">{job.location}</p>
             <p className="job-summary"><Mark text={job.summary} /></p>
-            <ul className="job-points">
-              {job.points.map((p, i) => (
-                // Six bullets arriving at once read as a wall; they arrive in
-                // sequence instead.
-                <li key={i} style={{ '--pt-i': Math.min(i, 7) } as CSSProperties}>
-                  <Mark text={p} />
-                </li>
-              ))}
-            </ul>
+
+            {'points' in job && (
+              <ul className="job-points">
+                {job.points.map((point, i) => (
+                  <li key={i} style={{ '--pt-i': Math.min(i, 7) } as CSSProperties}>
+                    <Mark text={point} />
+                  </li>
+                ))}
+              </ul>
+            )}
+
+            {/* The systems owned in this role, each as problem → how → result. */}
+            {j === 0 && work.length > 0 && (
+              <div className="systems">
+                <h4 className="systems-head">
+                  What I own here
+                  <span>{work.length} systems</span>
+                </h4>
+                {work.map((system, i) => <SystemStep key={system.slug} p={system} index={i} />)}
+              </div>
+            )}
+
+            {'alsoShipped' in job && (
+              <p className="job-also"><Mark text={job.alsoShipped} /></p>
+            )}
+
             <Chips items={job.stack} />
           </article>
         ))}
       </div>
     </Band>
+  )
+}
+
+/**
+ * One system, read as a process: what was wrong, what I did, what changed.
+ * The full design is a click away rather than on the page by default — the
+ * three lines are what a reader scanning the section actually needs.
+ */
+function SystemStep({ p, index }: { p: Project; index: number }) {
+  const [open, setOpen] = useState(false)
+
+  return (
+    <div className="system" style={{ '--sys-i': index } as CSSProperties}>
+      <span className="system-num">{String(index + 1).padStart(2, '0')}</span>
+
+      <div className="system-body">
+        <div className="system-top">
+          <h5>{p.title}</h5>
+          {/* The period carries the employer for the projects list; inside
+              the role card that is the card's own heading, so it goes. */}
+          {p.period && (
+            <span className="system-when">{p.period.split('·')[0].trim()}</span>
+          )}
+        </div>
+
+        {p.problem && (
+          <p className="system-line">
+            <span className="system-tag">Problem</span>
+            <span><Mark text={p.problem} /></span>
+          </p>
+        )}
+        {p.approach && (
+          <p className="system-line">
+            <span className="system-tag">How</span>
+            <span><Mark text={p.approach} /></span>
+          </p>
+        )}
+
+        {p.metrics && (
+          <div className="system-metrics">
+            {p.metrics.map(m => (
+              <span key={m.label}><b>{m.value}</b>{m.label}</span>
+            ))}
+          </div>
+        )}
+
+        <button className="row-more" onClick={() => setOpen(o => !o)} aria-expanded={open}>
+          {open ? 'Show less' : 'Read the full design'} <Chevron size={13} />
+        </button>
+
+        {open && (
+          <div className="system-detail">
+            {p.description.map((d, i) => <p key={i}><Mark text={d} /></p>)}
+            <Chips items={p.stack} />
+          </div>
+        )}
+      </div>
+    </div>
   )
 }
 
@@ -100,11 +179,9 @@ function DemoLogin({ demo }: { demo: { label: string; value: string } }) {
 }
 
 export function Projects() {
-  // The four personal projects are deployed, so each gets real screens of the
-  // app running. The work systems are internal — nothing to show — so they
-  // stay as compact rows below.
+  // Work systems are told once, in Experience, where the role gives them
+  // their context. This section is only what I built on my own.
   const mine = projects.filter(p => p.tags.includes('Personal'))
-  const work = projects.filter(p => p.tags.includes('Work'))
 
   return (
     <Band id="projects">
@@ -117,17 +194,6 @@ export function Projects() {
       <div className="cases">
         {mine.map((p, i) => <CaseStudy key={p.slug} p={p} index={i} />)}
       </div>
-
-      <ProjectGroup
-        index={String(mine.length + 1).padStart(2, '0')}
-        title="Systems I own at Infinite Locus"
-        note="Internal platforms, so there is nothing public to link. Open a row for the design and the trade-offs."
-        badge="In production"
-      >
-        <div className="project-rows">
-          {work.map(p => <ProjectRow key={p.slug} p={p} />)}
-        </div>
-      </ProjectGroup>
     </Band>
   )
 }
@@ -309,101 +375,6 @@ function ScreenCycler({
         </div>
       )}
     </div>
-  )
-}
-
-/** A labelled band inside the projects section. */
-function ProjectGroup({
-  index, title, note, badge, children,
-}: {
-  index: string
-  title: string
-  note: string
-  badge: string
-  children: ReactNode
-}) {
-  const ref = useReveal<HTMLDivElement>()
-
-  return (
-    <div className="pgroup reveal" ref={ref}>
-      <div className="pgroup-head">
-        <span className="pgroup-index">{index}</span>
-        <div className="pgroup-text">
-          <h3>{title}</h3>
-          <p>{note}</p>
-        </div>
-        <span className="pgroup-badge">{badge}</span>
-      </div>
-      {children}
-    </div>
-  )
-}
-
-/**
- * Demo credentials, one click to copy. A live link nobody can sign in to is
- * not much of a demo.
- */
-function ProjectRow({ p }: { p: Project }) {
-  const [open, setOpen] = useState(false)
-
-  return (
-    <article className={open ? 'project-row open' : 'project-row'}>
-      <button className="project-row-head" onClick={() => setOpen(o => !o)} aria-expanded={open}>
-        <span className="project-row-main">
-          <strong>{p.title}</strong>
-          <span className="project-row-blurb"><Mark text={p.blurb} /></span>
-        </span>
-        <span className="project-row-meta">
-          {p.period && <em>{p.period}</em>}
-          <Chevron size={15} />
-        </span>
-      </button>
-
-      {(p.problem || p.metrics?.length) && (
-        <div className="project-row-summary">
-          {p.problem && (
-            <dl className="prob-how">
-              <div><dt>Problem</dt><dd>{p.problem}</dd></div>
-              {p.approach && <div><dt>How</dt><dd>{p.approach}</dd></div>}
-            </dl>
-          )}
-          {p.metrics && p.metrics.length > 0 && (
-            <ul className="row-metrics" aria-label="Results">
-              {p.metrics.map(m => (
-                <li key={m.label}><b>{m.value}</b><span>{m.label}</span></li>
-              ))}
-            </ul>
-          )}
-          {!open && (
-            <button type="button" className="row-more" onClick={() => setOpen(true)} aria-expanded={false}>
-              Read the full design <Chevron size={13} />
-            </button>
-          )}
-        </div>
-      )}
-
-      {open && (
-        <div className="project-row-body">
-          {p.description.map((d, i) => <p key={i}><Mark text={d} /></p>)}
-          <Chips items={p.stack} />
-          {p.demo && <DemoLogin demo={p.demo} />}
-          <div className="project-foot">
-            {p.links?.map(l => (
-              <a
-                className={l.label === 'Live demo' ? 'link-live' : 'link-inline'}
-                key={l.href}
-                href={l.href}
-                target="_blank"
-                rel="noreferrer"
-              >
-                {l.label === 'Live demo' && <span className="live-dot" aria-hidden="true" />}
-                {l.label} <External size={14} />
-              </a>
-            ))}
-          </div>
-        </div>
-      )}
-    </article>
   )
 }
 
@@ -623,40 +594,6 @@ function SkillRail() {
         ))}
       </div>
     </div>
-  )
-}
-
-/* ---------------------------------------------------------- AI engineering */
-export function AIEngineering() {
-  return (
-    <Band id="ai">
-      <Head
-        eyebrow="AI Engineering"
-        title={aiEngineering.heading}
-        lead={aiEngineering.lead}
-      />
-
-      <ul className="pills pills-lead">
-        {aiEngineering.stack.map(t => (
-          <li className="pill pill-solid" key={t}>
-            <Logo label={t} /><span>{t}</span>
-          </li>
-        ))}
-      </ul>
-
-      <div className="ai-grid">
-        {aiEngineering.groups.map((g, i) => (
-          <article className="ai-card" key={g.title}>
-            <header>
-              <span className="ai-num">{String(i + 1).padStart(2, '0')}</span>
-              <h3>{g.title}</h3>
-            </header>
-            <p><Mark text={g.body} /></p>
-            <p className="service-proof"><Check size={14} /> <Mark text={g.proof} /></p>
-          </article>
-        ))}
-      </div>
-    </Band>
   )
 }
 

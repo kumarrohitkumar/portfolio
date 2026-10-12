@@ -94,7 +94,7 @@ export function useCopy() {
  */
 export function useCardGlow() {
   useEffect(() => {
-    const SELECTOR = '.project, .service, .ai-card, .skill-card'
+    const SELECTOR = '.project, .service, .skill-card'
 
     function onMove(event: PointerEvent) {
       const card = (event.target as HTMLElement | null)?.closest<HTMLElement>(SELECTOR)

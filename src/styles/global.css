@@ -531,38 +531,6 @@ svg.logo { width: 15px; height: 15px; }
   background: var(--accent); opacity: .5; margin-inline: 4px;
 }
 
-/* ---------------------------------------------------------- AI engineering */
-.ai-grid {
-  display: grid; grid-template-columns: repeat(auto-fit, minmax(330px, 1fr));
-  gap: 18px; align-items: start;
-}
-.ai-card {
-  border: 1px solid var(--border); border-radius: var(--radius-lg);
-  background: var(--surface); padding: 26px;
-  position: relative; overflow: hidden;
-  transition: transform var(--fast) var(--ease), border-color var(--fast) var(--ease),
-              box-shadow var(--fast) var(--ease);
-}
-.ai-card::before {
-  content: ''; position: absolute; inset: 0 0 auto 0; height: 1px;
-  background: linear-gradient(90deg, transparent, var(--accent), transparent);
-  opacity: 0; transition: opacity var(--fast) var(--ease);
-}
-.ai-card:hover { transform: translateY(-3px); border-color: var(--border-strong); box-shadow: var(--shadow); }
-.ai-card:hover::before { opacity: .8; }
-
-.ai-card header {
-  display: flex; align-items: center; gap: 12px;
-  padding-bottom: 15px; margin-bottom: 16px; border-bottom: 1px solid var(--border);
-}
-.ai-card h3 { font-size: 1.04rem; letter-spacing: -.025em; }
-.ai-num {
-  font-family: var(--font-mono); font-size: .7rem; font-weight: 700; color: var(--accent);
-  border: 1px solid color-mix(in srgb, var(--accent) 35%, transparent);
-  background: var(--accent-soft);
-  padding: 4px 8px; border-radius: 7px; flex: none;
-}
-
 /* ============================================================================
    Redesign layer — hero, motion and polish.
    Loaded after the base rules above, so it overrides them where they differ.
@@ -872,15 +840,12 @@ svg.logo { width: 15px; height: 15px; }
   transform: translate3d(0, 20px, 0);
   transition: opacity .62s var(--ease), transform .62s var(--ease);
 }
-.reveal.in { opacity: 1; transform: none; }
-
-/* Cards light up under the cursor. --mx/--my are set in Sections.tsx. */
-.project, .service, .ai-card, .skill-card {
+.reveal.in { opacity: 1; transform: none; }/* Cards light up under the cursor. --mx/--my are set in Sections.tsx. */
+.project, .service, .skill-card {
   position: relative;
   isolation: isolate;
   transition: transform .3s var(--ease), border-color .3s;
-}
-.project::before, .service::before, .ai-card::before, .skill-card::before {
+}.project::before, .service::before, .skill-card::before {
   content: '';
   position: absolute;
   inset: 0;
@@ -890,13 +855,11 @@ svg.logo { width: 15px; height: 15px; }
   transition: opacity .3s;
   background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 0%),
               var(--accent-soft), transparent 44%);
-}
-.project:hover, .service:hover, .ai-card:hover, .skill-card:hover {
+}.project:hover, .service:hover, .skill-card:hover {
   transform: translateY(-4px);
   border-color: var(--border-strong);
 }
 .project:hover::before, .service:hover::before,
-.ai-card:hover::before, .skill-card:hover::before { opacity: 1; }
 
 /* Buttons and pills should feel physical. */
 .btn { transition: transform .17s cubic-bezier(.34,1.56,.64,1), background .2s, border-color .2s, box-shadow .2s; }
@@ -917,21 +880,17 @@ section.band { padding-block: clamp(42px, 5.4vw, 70px); }
     transition-duration: .01ms !important;
   }
   .reveal { opacity: 1; transform: none; }
-}
-
-/* ============================================================================
-   Density pass. The page was nearly 12,000px tall — long enough that nobody
+}/* ============================================================================
+   Density pass. The page was nearly 12, 000px tall — long enough that nobody
    reaches the contact form. Nothing is removed here; everything is tightened.
    ========================================================================= */
 
 /* Three columns instead of two gives the same content a third less height. */
-.projects, .ai-grid, .services {
+.projects, .services {
   grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
   gap: 14px;
-}
-.project, .ai-card, .service { padding: 20px; }
-.project h3 { font-size: 1.08rem; }
-.project p, .ai-card p, .service p { font-size: .91rem; line-height: 1.58; }
+}.project, .service { padding: 20px; }
+.project h3 { font-size: 1.08rem; }.project p, .service p { font-size: .91rem; line-height: 1.58; }
 .project .metrics-row { gap: 8px; }
 
 /* Skills: denser pills, and the wide card stops forcing a full row. */
@@ -958,77 +917,7 @@ section.band { padding-block: clamp(42px, 5.4vw, 70px); }
 .hero-title { text-wrap: balance; max-width: 19ch; }
 @media (max-width: 920px) { .hero-title { max-width: none; } }
 
-/* ------------------------------------------------------- compact project rows */
-.project-rows {
-  margin-top: 16px;
-  border-top: 1px solid var(--border);
-}
-.project-row { border-bottom: 1px solid var(--border); }
-
-.project-row-head {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 18px;
-  width: 100%;
-  padding: 17px 10px;
-  background: none;
-  border: 0;
-  text-align: left;
-  color: inherit;
-  cursor: pointer;
-  font: inherit;
-  border-radius: var(--radius-sm);
-  transition: background .22s var(--ease), padding-left .22s var(--ease);
-}
-.project-row-head:hover { background: var(--surface); padding-left: 18px; }
-
-.project-row-main { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
-.project-row-main strong {
-  font-size: 1.02rem;
-  font-weight: 600;
-  letter-spacing: -.012em;
-  transition: color .2s;
-}
-.project-row-head:hover strong { color: var(--accent); }
-.project-row-blurb {
-  color: var(--text-dim);
-  font-size: .89rem;
-  line-height: 1.5;
-  max-width: 76ch;
-}
-
-.project-row-meta {
-  display: inline-flex;
-  align-items: center;
-  gap: 11px;
-  flex: none;
-  color: var(--text-faint);
-}
-.project-row-meta em {
-  font-family: var(--font-mono);
-  font-style: normal;
-  font-size: .73rem;
-}
-.project-row-meta svg { transition: transform .25s var(--ease); }
-.project-row.open .project-row-meta svg { transform: rotate(180deg); }
-
-.project-row-body {
-  padding: 2px 10px 22px;
-  animation: rk-fade-up .34s var(--ease) both;
-}
-.project-row-body p {
-  color: var(--text-dim);
-  font-size: .91rem;
-  line-height: 1.62;
-  margin-bottom: 10px;
-  max-width: 82ch;
-}
-.project-row-body .link-inline { margin-top: 12px; display: inline-flex; }
-
 @media (max-width: 720px) {
-  .project-row-head { flex-direction: column; gap: 8px; }
-  .project-row-meta { align-self: flex-start; }
 }
 
 /* --------------------------------------------- services + AI, compact form */
@@ -1046,12 +935,6 @@ section.band { padding-block: clamp(42px, 5.4vw, 70px); }
 .service h3 { font-size: .99rem; }
 .service p { font-size: .875rem; line-height: 1.55; margin-top: 7px; }
 .service-proof { font-size: .8rem; margin-top: 11px; padding-top: 10px; }
-
-.ai-grid { grid-template-columns: repeat(auto-fill, minmax(275px, 1fr)); gap: 12px; }
-.ai-card { padding: 18px 19px; }
-.ai-card h3 { font-size: 1rem; }
-.ai-card p { font-size: .885rem; line-height: 1.57; }
-.ai-card .service-proof { font-size: .79rem; margin-top: 10px; padding-top: 9px; }
 
 /* About: four paragraphs of prose do not need 18px line-height at 1.9. */
 .about-copy p { font-size: .98rem; line-height: 1.68; margin-bottom: 14px; }
@@ -1135,8 +1018,7 @@ html, body { overflow-x: clip; max-width: 100%; }
   .header, .to-top, .marquee, .hero-aurora, .filters, .drawer { display: none !important; }
   html, body { background: #fff; color: #000; }
   .reveal { opacity: 1 !important; transform: none !important; }
-  section.band { padding-block: 18px; break-inside: avoid; }
-  .project, .service, .ai-card, .skill-card, .job { break-inside: avoid; }
+  section.band { padding-block: 18px; break-inside: avoid; }.project, .service, .skill-card, .job { break-inside: avoid; }
   a[href^="http"]::after { content: ' (' attr(href) ')'; font-size: .72em; color: #555; }
 }
 
@@ -1307,70 +1189,7 @@ html, body { overflow-x: clip; max-width: 100%; }
   .live-strip { gap: 11px; padding: 12px 13px; }
 }
 
-/* ============================================================================
-   Project groups. Two bands with different jobs: what I shipped alone, and
-   what I own at work. The header makes which is which unmissable.
-   ========================================================================= */
-.pgroup + .pgroup { margin-top: clamp(34px, 4.5vw, 54px); }
-
-.pgroup-head {
-  display: flex;
-  align-items: flex-start;
-  gap: 16px;
-  padding-bottom: 16px;
-  margin-bottom: 20px;
-  border-bottom: 1px solid var(--border);
-  position: relative;
-}
-/* A line that draws itself across the header once the group scrolls in. */
-.pgroup-head::after {
-  content: '';
-  position: absolute;
-  left: 0; bottom: -1px;
-  height: 1px;
-  width: 0;
-  background: linear-gradient(90deg, var(--accent), transparent);
-}
-.reveal.in .pgroup-head::after { animation: rk-draw .9s var(--ease) both .12s; }
 @keyframes rk-draw { to { width: 100%; } }
-
-.pgroup-index {
-  font-family: var(--font-mono);
-  font-size: .74rem;
-  color: var(--accent);
-  border: 1px solid color-mix(in srgb, var(--accent) 32%, transparent);
-  background: var(--accent-soft);
-  border-radius: 7px;
-  padding: 4px 8px;
-  flex: none;
-  margin-top: 2px;
-}
-.pgroup-text { flex: 1 1 auto; min-width: 0; }
-.pgroup-text h3 {
-  font-size: clamp(1.1rem, 2.1vw, 1.34rem);
-  font-weight: 650;
-  letter-spacing: -.018em;
-}
-.pgroup-text p {
-  color: var(--text-dim);
-  font-size: .9rem;
-  line-height: 1.55;
-  margin-top: 5px;
-  max-width: 70ch;
-}
-.pgroup-badge {
-  flex: none;
-  font-size: .73rem;
-  font-weight: 600;
-  letter-spacing: .06em;
-  text-transform: uppercase;
-  color: var(--text-faint);
-  border: 1px solid var(--border);
-  border-radius: 99px;
-  padding: 5px 11px;
-  margin-top: 2px;
-  white-space: nowrap;
-}
 
 /* Cards deal in left to right as the group arrives. */
 .reveal.in .projects .project {
@@ -1378,41 +1197,17 @@ html, body { overflow-x: clip; max-width: 100%; }
   animation-delay: calc(var(--card-i, 0) * 70ms + 90ms);
 }
 
-/* Rows arrive one after another, slightly faster. */
-.reveal.in .project-rows .project-row {
-  animation: rk-line .36s var(--ease) both;
-}
-.reveal.in .project-rows .project-row:nth-child(1) { animation-delay: .10s }
-.reveal.in .project-rows .project-row:nth-child(2) { animation-delay: .17s }
-.reveal.in .project-rows .project-row:nth-child(3) { animation-delay: .24s }
-.reveal.in .project-rows .project-row:nth-child(4) { animation-delay: .31s }
-.reveal.in .project-rows .project-row:nth-child(n+5) { animation-delay: .38s }
-
-.pgroup .project-rows { margin-top: 0; }
-
 @media (max-width: 680px) {
-  .pgroup-head { flex-wrap: wrap; gap: 11px; }
-  .pgroup-badge { order: 3; margin-top: 0; }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .reveal.in .pgroup-head::after,
-  .reveal.in .projects .project,
-  .reveal.in .project-rows .project-row { animation: none !important; }
-  .pgroup-head::after { width: 100%; }
+@media (prefers-reduced-motion: reduce) {.reveal.in .projects .project { animation: none !important; }
 }
 
 /* Four cards in a three-column grid leaves one stranded with two empty
    slots beside it. Two columns pairs them evenly and gives each more room. */
 @media (min-width: 900px) {
-  .pgroup .projects { grid-template-columns: repeat(2, 1fr); }
+  .cases .case-stats { gap: 22px; }
 }
-
-/* Equal heights per row, with the links pinned to the bottom, so a short
-   card does not sit in a pool of empty space. */
-.pgroup .projects { align-items: stretch; }
-.pgroup .project { display: flex; flex-direction: column; }
-.pgroup .project .project-foot { margin-top: auto; padding-top: 14px; }
 
 /* ============================================================================
    Skills, aligned. The groups were different widths and heights depending on
@@ -1602,8 +1397,7 @@ code.ic {
   .ach-item:hover { transform: none; }
 }
 
-/* ------------------------------------ work projects: problem, how and result */
-.project-row-summary { padding: 0 18px 16px; display: grid; gap: 12px; }
+/* Problem / how pairs, used by the systems in Experience. */
 .prob-how { display: grid; gap: 6px; margin: 0; }
 .prob-how > div { display: grid; grid-template-columns: 72px 1fr; gap: 10px; align-items: baseline; }
 .prob-how dt { font-family: var(--font-mono); font-size: .7rem; text-transform: uppercase; letter-spacing: .08em; color: var(--accent); }
@@ -1625,8 +1419,7 @@ code.ic {
    ========================================================================= */
 @media (max-width: 560px) {
   .terminal-body { font-size: .8rem; line-height: 1.75; }
-  .terminal-bar span { font-size: .74rem; }
-  .project-period, .project-row-meta em { font-size: .74rem; }
+  .terminal-bar span { font-size: .74rem; }.project-period { font-size: .74rem; }
   .metric-label, .hero .metric-label { font-size: .8rem; }
 }
 
@@ -1661,13 +1454,11 @@ code.ic {
 }
 
 /* Comfortable reading measure on a narrow screen. */
-@media (max-width: 480px) {
-  .project p, .project-row-body p, .ai-card p, .service p, .about-copy p {
+@media (max-width: 480px) {.project p, .service p, .about-copy p {
     font-size: .92rem;
     line-height: 1.62;
   }
   .section-head p { font-size: .94rem; }
-  .pgroup-text p { font-size: .87rem; }
 }
 
 /* ============================================================================
@@ -1893,7 +1684,6 @@ code.ic {
 }
 @keyframes rk-tab { from { transform: scaleX(0) } to { transform: scaleX(1) } }
 
-
 .reveal.in .case { animation: rk-fade-up .55s var(--ease) both; }
 
 @media (max-width: 920px) {
@@ -1981,10 +1771,6 @@ code.ic {
 }
 
 /* ------------------------------------- the quieter sections, on arrival */
-.reveal.in .ai-card {
-  animation: rk-fade-up .45s var(--ease) both;
-  animation-delay: calc(var(--card-i, 0) * 60ms);
-}
 .reveal.in .service {
   animation: rk-fade-up .45s var(--ease) both;
   animation-delay: calc(var(--card-i, 0) * 55ms);
@@ -1999,11 +1785,7 @@ code.ic {
 @media (prefers-reduced-motion: reduce) {
   .progress span { transition: none; }
   .reveal.in .timeline::before { animation: none; transform: scaleY(1); }
-  .reveal.in .job-dot::after { animation: none; transform: scale(1); }
-  .reveal.in .job-points li,
-  .reveal.in .ai-card,
-  .reveal.in .service,
-  .reveal.in .contact-row { animation: none !important; }
+  .reveal.in .job-dot::after { animation: none; transform: scale(1); }.reveal.in .job-points li, .reveal.in .service, .reveal.in .contact-row { animation: none !important; }
 }
 
 /* ============================================================================
@@ -2143,3 +1925,140 @@ code.ic {
 }
 .marquee-run > span.marquee-item:hover { border-color: var(--border-strong); color: var(--text); }
 .marquee-item .logo { flex: none; }
+
+/* ============================================================================
+   The systems owned in a role, read as a process: what was wrong, what I did,
+   what changed. They used to be written twice — as bullets here and as rows
+   in Projects — so this is now the only place they appear.
+   ========================================================================= */
+.systems {
+  margin-top: 22px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+}
+
+.systems-head {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  font-size: .78rem;
+  font-weight: 600;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-bottom: 18px;
+}
+.systems-head span {
+  font-family: var(--font-mono);
+  font-size: .68rem;
+  letter-spacing: .06em;
+  color: var(--text-faint);
+  text-transform: none;
+}
+
+.system {
+  display: grid;
+  grid-template-columns: 34px 1fr;
+  gap: 14px;
+  padding: 16px 0;
+  border-bottom: 1px dashed var(--border);
+}
+.system:last-of-type { border-bottom: 0; padding-bottom: 4px; }
+
+.system-num {
+  font-family: var(--font-mono);
+  font-size: .72rem;
+  color: var(--accent);
+  border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent);
+  background: var(--accent-soft);
+  border-radius: 7px;
+  padding: 3px 0;
+  text-align: center;
+  height: fit-content;
+  margin-top: 1px;
+}
+
+.system-body { min-width: 0; }
+.system-top {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+.system-top h5 { font-size: 1rem; font-weight: 600; letter-spacing: -.015em; }
+.system-when { font-family: var(--font-mono); font-size: .71rem; color: var(--text-faint); }
+
+/* Problem and How share a label column, so the two read as a pair. */
+.system-line {
+  display: grid;
+  grid-template-columns: 74px 1fr;
+  gap: 12px;
+  margin-top: 9px;
+  font-size: .9rem;
+  line-height: 1.55;
+  color: var(--text-dim);
+}
+.system-tag {
+  font-family: var(--font-mono);
+  font-size: .66rem;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--accent);
+  padding-top: 3px;
+}
+
+.system-metrics { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 13px; }
+.system-metrics span {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+  font-size: .78rem;
+  color: var(--text-faint);
+  border: 1px solid var(--border);
+  border-radius: 99px;
+  padding: 5px 12px;
+}
+.system-metrics b {
+  font-family: var(--font-mono);
+  font-weight: 600;
+  font-size: .84rem;
+  color: var(--accent);
+}
+
+.system-detail { margin-top: 13px; }
+.system-detail p {
+  font-size: .9rem;
+  line-height: 1.62;
+  color: var(--text-dim);
+  margin-bottom: 10px;
+  max-width: 80ch;
+}
+
+.job-also {
+  margin-top: 18px;
+  padding-top: 15px;
+  border-top: 1px solid var(--border);
+  font-size: .91rem;
+  line-height: 1.6;
+  color: var(--text-dim);
+}
+
+/* Each system arrives after the role it belongs to, in order. */
+.reveal.in .system {
+  animation: rk-line .42s var(--ease) both;
+  animation-delay: calc(.45s + var(--sys-i, 0) * 90ms);
+}
+.reveal.in .systems-head { animation: rk-fade-up .4s var(--ease) both .38s; }
+
+@media (max-width: 620px) {
+  .system { grid-template-columns: 1fr; gap: 8px; }
+  .system-num { width: 34px; }
+  .system-line { grid-template-columns: 1fr; gap: 2px; }
+  .system-tag { padding-top: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal.in .system,
+  .reveal.in .systems-head { animation: none !important; }
+}

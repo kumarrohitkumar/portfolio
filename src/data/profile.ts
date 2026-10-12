@@ -131,32 +131,17 @@ export const experience = [
       'Backend engineer on a distribution and finance platform. I own automation, ' +
       'notifications and cross-platform synchronisation end to end — design through ' +
       'production support.',
-    points: [
-      'Built and own a distributor order automation platform: **15+ Python and ' +
-        'Playwright bots** across **6+ third-party portals**, covering sales returns, ' +
-        'report extraction and reconciliation. Manual effort down **90%+**, running at ' +
-        'a **95%+ success rate** in production.',
-
-      'Architected it end to end, **HLD and LLD through rollout**. **Redis distributed ' +
-        'locks**, batching, retries and **saga-style compensating rollbacks** make order ' +
-        'and financial processing **exactly-once** — no duplicate or partial records.',
-
-      'Built an event-driven notification platform in **Go (Gin)** on **AWS SNS/SQS**, ' +
-        'with isolated workers for **Firebase FCM, SMTP email and WebSocket**. ' +
-        'Synchronous API response time fell **70%**.',
-
-      'Shipped secure financial workflows: **PayPal payments** with webhook-verified ' +
-        'state, **Go PDF generation** behind access-controlled **S3 signed URLs**, and ' +
-        '**Redis-based OTP** that blocks duplicate and expired logins.',
-
-      'Designed the **Kafka** synchronisation pipeline between our platform and an ' +
-        'external distributor system — **Node.js, TypeScript and MongoDB**, fully ' +
-        'idempotent, with **near real-time consistency** on order and financial events.',
-
-      'Led a **32M+ record** production migration: a batched, idempotent **four-phase ' +
-        'canonical merge** that de-duplicated the store master with **zero data loss**, ' +
-        'full audit traceability and **one-click rollback**.',
-    ],
+    /**
+     * The four systems below used to be repeated here as bullets and again as
+     * project rows. They now live once, in `projects` tagged 'Work', and this
+     * section renders them. Only the work that is not one of those four stays
+     * written out here.
+     */
+    alsoShipped:
+      'Secure financial workflows alongside those: **PayPal payments** with ' +
+      'webhook-verified state, **Go PDF generation** behind access-controlled ' +
+      '**S3 signed URLs**, and **Redis-based OTP** that blocks duplicate and ' +
+      'expired logins.',
     stack: ['Go', 'Gin', 'Python', 'Node.js', 'TypeScript', 'Kafka', 'Redis', 'MongoDB', 'MySQL', 'AWS', 'Playwright', 'Docker'],
   },
   {
@@ -514,66 +499,6 @@ export const skills = [
   { group: 'Engineering',      items: ['Distributed systems', 'System design (HLD/LLD)', 'Idempotency & exactly-once', 'Saga / compensating rollback', 'Data migrations', 'Testing & CI', 'OOP', 'DBMS', 'Computer networks', 'DSA'] },
 ]
 
-// ------------------------------------------------------- AI engineering
-/**
- * Framed as learning on purpose. Every line is something that exists in code I
- * wrote, and `proof` says where — a list of things I have read about would be
- * worth nothing here.
- */
-export const aiEngineering = {
-  heading: 'Learning agents by building them',
-  lead:
-    'Learned by building, then measuring. All of it exists in code I wrote — ' +
-    'mostly Isaa, the assistant inside Finishh Club.',
-
-  groups: [
-    {
-      title: 'Agent loop & tool calling',
-      body:
-        'Call the model, run the tool it asks for, append the result, repeat. A hard ' +
-        'step cap, so a confused model cannot loop forever or burn a budget.',
-      proof: 'Four tools running in Isaa',
-    },
-    {
-      title: 'Retrieval (RAG)',
-      body:
-        'Chunks to embeddings to pgvector, in the same Postgres as everything else. ' +
-        'Retrieval is a tool the agent may call, not a step bolted on before it runs.',
-      proof: 'Recall measured against an 85% target',
-    },
-    {
-      title: 'Reliability & cost',
-      body:
-        'Tool errors return to the model as observations, not crashes, so it can ' +
-        'recover. Bounded waits on rate limits. Tokens counted per run.',
-      proof: 'Bounded wait, not a three-minute backoff',
-    },
-    {
-      title: 'Guardrails & safety',
-      body:
-        'The dangerous rules live in code and in the shape of the tools, never in the ' +
-        'prompt alone — a model can ignore a prompt.',
-      proof: 'No-verdict rule enforced and tested, not just asked for',
-    },
-    {
-      title: 'Evaluation',
-      body:
-        'Eval sets rather than unit tests, because the same input does not give the ' +
-        'same output twice. Named cases for refusal, grounding and hallucination.',
-      proof: 'Refusal, grounding and hallucination suites',
-    },
-    {
-      title: 'Providers & tooling',
-      body:
-        'Gemini and Groq behind the tool-calling format they share, so the provider ' +
-        'swaps without rewriting the agent. Model ids pinned in config.',
-      proof: 'Same agent run on both Gemini and Groq',
-    },
-  ],
-
-  stack: ['Python', 'Groq', 'Google Gemini', 'pgvector', 'PostgreSQL', 'FastAPI', 'Embeddings', 'Evals'],
-}
-
 // ------------------------------------------------------------------- services
 /**
  * Every service here is something already running in production somewhere, and
@@ -706,7 +631,6 @@ export const nav = [
   { id: 'experience',  label: 'Experience' },
   { id: 'projects',    label: 'Projects' },
   { id: 'skills',      label: 'Skills' },
-  { id: 'ai',          label: 'AI Engineering' },
   { id: 'services',    label: 'Services' },
   { id: 'contact',     label: 'Contact' },
 ]

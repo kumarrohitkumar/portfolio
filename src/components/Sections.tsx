@@ -110,8 +110,8 @@ export function Projects() {
     <Band id="projects">
       <Head
         eyebrow="Selected work"
-        title="Four products you can open right now"
-        lead="Every one is deployed with a demo login. The screens below are the real apps running, not mockups."
+        title="Five things I built on my own"
+        lead="Four are deployed with a demo login, and the payments ledger runs with one command. The screens below are the real thing running, not mockups."
       />
 
       <div className="cases">
@@ -119,7 +119,7 @@ export function Projects() {
       </div>
 
       <ProjectGroup
-        index="05"
+        index={String(mine.length + 1).padStart(2, '0')}
         title="Systems I own at Infinite Locus"
         note="Internal platforms, so there is nothing public to link. Open a row for the design and the trade-offs."
         badge="In production"

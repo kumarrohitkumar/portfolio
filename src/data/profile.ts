@@ -180,6 +180,45 @@ export const experience = [
 // -------------------------------------------------------------------- projects
 export const projects: Project[] = [
   {
+    slug: 'ledger',
+    shots: [
+      { src: 'shots/l1-grafana.png', label: 'Under load', alt: 'Grafana during the load test: transfers per second, latency percentiles, outbox and consumer throughput' },
+    ],
+    featured: true,
+    title: 'Ledger — exactly-once payments',
+    period: 'Oct 2026 · Personal',
+    blurb:
+      'A double-entry payments ledger where a retried request, a crashed worker or a ' +
+      'duplicated Kafka message can never move money twice.',
+    description: [
+      '**Exactly-once money movement.** Every transfer needs an Idempotency-Key, and the key ' +
+        'commits in the same transaction as the money. Twenty identical requests fired at ' +
+        'once produce **one** transfer; a reused key with a different body is refused.',
+      '**Double entry, provably balanced.** Each transfer writes a debit and a credit that ' +
+        'sum to zero. Accounts are locked in id order so opposite transfers cannot deadlock, ' +
+        'and a reconciliation job proves cached balances still match the postings.',
+      '**No lost or doubled events.** A transactional outbox publishes to Kafka at-least-once; ' +
+        'the consumer stores each effect and its event id in one transaction, so redelivery ' +
+        'changes nothing.',
+      '**Tested where it breaks.** Crash tests kill the relay after publishing and the consumer ' +
+        'before committing offsets, on real Postgres and Redpanda containers. Removing the row ' +
+        'locks makes the concurrency test fail, which is how I know it tests something.',
+      '**Measured.** 30,001 transfers in 60 s at 500 req/s with **p95 2.1 ms** and 0 errors; ' +
+        'about 1,800 transfers/s at a laptop’s limit, reconciling cleanly after both runs.',
+    ],
+    metrics: [
+      { value: '0', label: 'double charges under load' },
+      { value: '2.1ms', label: 'p95 at 500 req/s' },
+      { value: '1,800/s', label: 'transfers at the limit' },
+    ],
+    stack: ['Go', 'PostgreSQL', 'Kafka', 'Prometheus', 'Grafana', 'Docker', 'k6'],
+    tags: ['Personal', 'Distributed Systems', 'Data'],
+    links: [
+      { label: 'GitHub', href: 'https://github.com/kumarrohitkumar/ledger' },
+    ],
+    demo: { label: 'Run it', value: 'git clone https://github.com/kumarrohitkumar/ledger && cd ledger && docker compose up --build' },
+  },
+  {
     slug: 'kosh-lms',
     shots: [
       { src: 'shots/k1-overview.webp',  label: 'Overview',   alt: 'The Kosh portfolio overview: disbursed, collected, outstanding and overdue' },

@@ -72,20 +72,59 @@ export const profile = {
    * all have their own sections further down — repeating them here would waste
    * the one place on the page where I get to say how I think.
    */
+  /**
+   * Each paragraph makes a claim, and each claim can be opened to the work
+   * that backs it. An assertion nobody can check is just a nice sentence.
+   */
   about: [
-    'I build the parts of a system where a mistake costs money — real orders, real ' +
-      'stock, real payments. A duplicate payment is not a bug report; it is somebody ' +
-      'in finance losing a week. **Idempotency, retries and audit trails go in from ' +
-      'the first line, not after the first incident.**',
-
-    'The work I like is the unglamorous middle: the consumer that must not ' +
-      'double-process, the migration that must be reversible. **Owning a system after ' +
-      'it ships is what taught me how to design one.**',
-
-    'Most of my depth is on the server, but I do not stop at the API boundary — I ' +
-      'build the interface when a feature needs one. Lately the same discipline has ' +
-      'gone into LLM agents: tools and guardrails in code, and **evals, so a change ' +
-      'is a measurement and not a feeling.**',
+    {
+      text:
+        'I build the parts of a system where a mistake costs money — real orders, ' +
+        'real stock, real payments. A duplicate payment is not a bug report; it is ' +
+        'somebody in finance losing a week. **Idempotency, retries and audit trails ' +
+        'go in from the first line, not after the first incident.**',
+      proof: {
+        title: '32M-record canonical merge',
+        detail:
+          'De-duplicated the production store master in four idempotent, restartable ' +
+          'phases — **zero rows lost**, every change audited, and one click to roll ' +
+          'the whole thing back.',
+        to: '#experience',
+        cta: 'See it in Experience',
+      },
+    },
+    {
+      text:
+        'The work I like is the unglamorous middle: the consumer that must not ' +
+        'double-process, the migration that must be reversible. **Owning a system ' +
+        'after it ships is what taught me how to design one.**',
+      proof: {
+        title: 'Cross-platform sync pipeline',
+        detail:
+          'Two platforms that both accept writes and must agree. Kafka consumers ' +
+          'with **idempotency keys** and a sync-state record per event, so a replay ' +
+          'is safe and anything missed can be re-fired. I designed it, shipped it, ' +
+          'and carry the pager for it.',
+        to: '#experience',
+        cta: 'See it in Experience',
+      },
+    },
+    {
+      text:
+        'Most of my depth is on the server, but I do not stop at the API boundary — ' +
+        'I build the interface when a feature needs one. Lately the same discipline ' +
+        'has gone into LLM agents: tools and guardrails in code, and **evals, so a ' +
+        'change is a measurement and not a feeling.**',
+      proof: {
+        title: 'Isaa, inside Finishh Club',
+        detail:
+          'A tool-calling agent with no framework. Numbers come only from SQL tools, ' +
+          'never from retrieval, and an **eval suite caught fabricated fund metrics ' +
+          'before release**. 82 tests behind it.',
+        to: '#projects',
+        cta: 'Open the case study',
+      },
+    },
   ],
 } as const
 
@@ -499,63 +538,6 @@ export const skills = [
   { group: 'Engineering',      items: ['Distributed systems', 'System design (HLD/LLD)', 'Idempotency & exactly-once', 'Saga / compensating rollback', 'Data migrations', 'Testing & CI', 'OOP', 'DBMS', 'Computer networks', 'DSA'] },
 ]
 
-// ------------------------------------------------------------------- services
-/**
- * Every service here is something already running in production somewhere, and
- * `proof` says where. A list of capabilities nobody has paid for is a wish list.
- */
-export const services = [
-  {
-    title: 'Backend APIs & Microservices',
-    body:
-      'REST services in Go, Python or Node, layered so the business rules never end ' +
-      'up inside an HTTP handler. Authentication, validation, error handling, OpenAPI ' +
-      'docs, and a Docker setup that deploys the same way every time.',
-    proof: 'Running in production at Infinite Locus',
-  },
-  {
-    title: 'Event-Driven Pipelines',
-    body:
-      'Kafka, SNS/SQS or Redis pipelines where the consumer is safe to replay. ' +
-      'Idempotency keys, retries, dead-letter handling and per-event sync tracking — ' +
-      'so when something does not arrive, you can say exactly where it stopped ' +
-      'instead of guessing.',
-    proof: 'Keeps two live distribution platforms in agreement',
-  },
-  {
-    title: 'Workflow & Browser Automation',
-    body:
-      'Playwright bots for portals that have no API — reports, reconciliation, data ' +
-      'entry. Distributed locks and checkpoints mean a retry never files the same ' +
-      'thing twice, which is the part most automation gets wrong.',
-    proof: '15+ bots, 6+ portals, 95%+ success rate',
-  },
-  {
-    title: 'Data Migrations & Clean-Up',
-    body:
-      'Batched, restartable migrations with an audit trail and a rollback that has ' +
-      'actually been tested. De-duplication, canonical merges and schema moves on ' +
-      'databases that cannot be taken offline.',
-    proof: '32M records merged, zero data loss',
-  },
-  {
-    title: 'Documents & PDF Generation',
-    body:
-      'Invoices, statements and reports rendered server-side in Go or Python, with ' +
-      'real layout control rather than a screenshot of a web page. Delivered through ' +
-      'access-controlled signed URLs, not public links.',
-    proof: 'Go PDF generation behind S3 signed URLs',
-  },
-  {
-    title: 'LLM Agents & RAG',
-    body:
-      'An assistant that answers from your data, not from the open internet. Tool ' +
-      'calling over your database, retrieval with citations, guardrails written in ' +
-      'code, and evals so you can prove a prompt change helped.',
-    proof: 'Built Isaa, the assistant inside Finishh Club',
-  },
-]
-
 // ------------------------------------------------------------------ education
 /**
  * `logo` is each institution's own emblem, bundled under public/logos/ rather
@@ -631,6 +613,5 @@ export const nav = [
   { id: 'experience',  label: 'Experience' },
   { id: 'projects',    label: 'Projects' },
   { id: 'skills',      label: 'Skills' },
-  { id: 'services',    label: 'Services' },
   { id: 'contact',     label: 'Contact' },
 ]

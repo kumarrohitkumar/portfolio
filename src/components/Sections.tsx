@@ -1,7 +1,7 @@
 import type { CSSProperties } from 'react'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import {
-  achievements, education, experience, profile, projects, services, skills,
+  achievements, education, experience, profile, projects, skills,
 } from '../data/profile'
 import type { Project } from '../data/profile'
 import { useCopy, useCountUp, useInView, usePrefersReducedMotion } from '../lib/hooks'
@@ -19,7 +19,7 @@ export function About() {
       <Head eyebrow="About" title="What I work on, and how I work" />
       <div className="about-grid">
         <div className="about-copy">
-          {profile.about.map((p, i) => <p key={i}><Mark text={p} /></p>)}
+          {profile.about.map((para, i) => <AboutClaim key={i} para={para} index={i} />)}
         </div>
         <aside className="card">
           <ul className="fact-list">
@@ -36,6 +36,37 @@ export function About() {
         </aside>
       </div>
     </Band>
+  )
+}
+
+/**
+ * A paragraph and the work that backs its claim. The proof is one click away
+ * rather than on the page by default — the point is that it can be checked,
+ * not that everyone reads it.
+ */
+function AboutClaim({ para, index }: { para: (typeof profile.about)[number]; index: number }) {
+  const [open, setOpen] = useState(false)
+
+  return (
+    <div className="claim" style={{ '--claim-i': index } as CSSProperties}>
+      <p><Mark text={para.text} /></p>
+
+      <button className="claim-toggle" onClick={() => setOpen(o => !o)} aria-expanded={open}>
+        <span className="claim-dot" aria-hidden="true" />
+        {open ? 'Hide the proof' : 'Where this shows up'}
+        <Chevron size={13} />
+      </button>
+
+      {open && (
+        <div className="claim-proof">
+          <strong>{para.proof.title}</strong>
+          <p><Mark text={para.proof.detail} /></p>
+          <a className="link-inline" href={para.proof.to}>
+            {para.proof.cta} <Arrow size={13} />
+          </a>
+        </div>
+      )}
+    </div>
   )
 }
 
@@ -594,29 +625,6 @@ function SkillRail() {
         ))}
       </div>
     </div>
-  )
-}
-
-/* ---------------------------------------------------------------- services */
-export function Services() {
-  return (
-    <Band id="services">
-      <Head
-        eyebrow="Services"
-        title="What I can build for you"
-        lead="Freelance and contract work alongside my full-time role. Tell me the problem, not the technology — the stack is my job to pick."
-      />
-      <div className="service-grid">
-        {services.map((s, i) => (
-          <div className="service" key={s.title} style={{ '--card-i': i } as CSSProperties}>
-            <div className="service-num">{String(i + 1).padStart(2, '0')}</div>
-            <h3>{s.title}</h3>
-            <p><Mark text={s.body} /></p>
-            <p className="service-proof"><Check size={14} /> <Mark text={s.proof} /></p>
-          </div>
-        ))}
-      </div>
-    </Band>
   )
 }
 

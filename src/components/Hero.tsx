@@ -17,27 +17,43 @@ const metrics = [
 ]
 
 /**
- * A short, fixed transcript rather than a live shell. It says what I work on
- * faster than a paragraph would, and it is the one visual that belongs on a
- * backend engineer's page.
+ * A short, fixed transcript rather than a live shell.
+ *
+ * It used to print the role, the stack and the live count — all three of
+ * which the card, the intro and the strip below already say. So it now does
+ * the one thing a terminal can do and prose cannot: run the same request
+ * twice and show the second one change nothing. That is the headline above
+ * it, demonstrated rather than claimed.
+ *
+ * The order number and the key are illustrative, the way a code sample is.
+ * No production figures are invented here.
  */
 const transcript: { prompt?: boolean; parts: { text: string; tone?: string }[] }[] = [
-  { prompt: true, parts: [{ text: 'whoami' }] },
-  { parts: [{ text: 'SDE I · Infinite Locus · Gurugram', tone: 'dim' }] },
-  { prompt: true, parts: [{ text: 'stack --primary' }] },
+  { prompt: true, parts: [{ text: 'pay --order 8812 --key 7f2a' }] },
   {
     parts: [
-      { text: 'Go', tone: 'b' }, { text: ' · ', tone: 'dim' },
-      { text: 'Python', tone: 'b' }, { text: ' · ', tone: 'dim' },
-      { text: 'Node', tone: 'b' }, { text: ' · ', tone: 'dim' },
-      { text: 'React', tone: 'b' }, { text: ' · Kafka · Redis · AWS', tone: 'dim' },
+      { text: '201', tone: 'w' }, { text: ' created · charged once', tone: 'dim' },
     ],
   },
-  { prompt: true, parts: [{ text: 'ls ~/shipped' }] },
+  // The same line again, on purpose. Without the comment it reads as a typo
+  // rather than as the point being made.
+  {
+    prompt: true,
+    parts: [
+      { text: 'pay --order 8812 --key 7f2a' }, { text: '  # retry', tone: 'dim' },
+    ],
+  },
   {
     parts: [
-      { text: '8', tone: 'w' }, { text: ' systems · ', tone: 'dim' },
-      { text: '4', tone: 'w' }, { text: ' live, open to anyone', tone: 'dim' },
+      { text: '200', tone: 'w' }, { text: ' replayed · ', tone: 'dim' },
+      { text: 'charged nothing', tone: 'b' },
+    ],
+  },
+  { prompt: true, parts: [{ text: 'kafka replay orders.v1' }] },
+  {
+    parts: [
+      { text: 'same keys in · ', tone: 'dim' },
+      { text: '0 duplicates', tone: 'b' }, { text: ' out', tone: 'dim' },
     ],
   },
 ]

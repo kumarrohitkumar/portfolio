@@ -35,9 +35,9 @@ export const profile = {
   /**
    * The hero card, under the name. It used to restate the last sentence of
    * `intro`; the job and the employer are the one thing the hero never says.
-   * "since Jul 2025" rather than a tenure, so the line never goes stale.
+   * No date — Experience carries the period.
    */
-  roleSub: 'SDE I at Infinite Locus · since Jul 2025',
+  roleSub: 'SDE I at Infinite Locus',
   roleLine: 'Software Development Engineer I at Infinite Locus',
   tagline: 'I build systems that do not lose your data.',
   intro:

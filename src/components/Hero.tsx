@@ -108,8 +108,8 @@ export function Hero() {
                 <img
                   src={profile.photo}
                   alt={`Portrait of ${profile.name}`}
-                  width={96}
-                  height={96}
+                  width={124}
+                  height={124}
                   onError={() => setPhotoOk(false)}
                 />
               </picture>
@@ -119,6 +119,7 @@ export function Hero() {
             <div>
               <strong>{profile.name}</strong>
               <small>{profile.roleSub}</small>
+              <SchoolLine />
             </div>
           </div>
         </div>
@@ -136,6 +137,34 @@ export function Hero() {
 
       <Marquee />
     </section>
+  )
+}
+
+/**
+ * The degree, on the card rather than in a section of its own. The emblem
+ * falls back to plain text, so a missing file costs the line nothing.
+ */
+function SchoolLine() {
+  const [ok, setOk] = useState(true)
+  const { degree, institute, logo } = profile.school
+
+  return (
+    <span className="hero-school">
+      {ok && (
+        <img
+          src={logo}
+          alt=""
+          width={22}
+          height={22}
+          loading="lazy"
+          decoding="async"
+          onError={() => setOk(false)}
+        />
+      )}
+      <span>
+        {degree} · <b>{institute}</b>
+      </span>
+    </span>
   )
 }
 

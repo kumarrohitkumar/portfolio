@@ -42,6 +42,19 @@ export const profile = {
 
   location: 'Gurugram, India',
   hometown: 'Bharatpur, Rajasthan',
+
+  /**
+   * The one line of schooling the page keeps now that the Education section is
+   * gone. It sits on the hero card, where a recruiter looks first, instead of
+   * costing a section of its own two screens down.
+   */
+  school: {
+    /* Short on purpose: the card has one line to spare, and the branch is on
+       the resume. The institute is the part a reader is scanning for. */
+    degree: 'B.Tech',
+    institute: 'IIT (BHU) Varanasi',
+    logo: 'logos/iit-bhu.png',
+  },
   availability: 'Open to software engineering roles and selected freelance work',
 
   // ------------------------------------------------------------------- links

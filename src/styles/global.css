@@ -605,10 +605,10 @@ svg.logo { width: 15px; height: 15px; }
 }
 /* `picture` is the flex child now, so it carries the sizing. A real headshot
    earns more room than the 54px placeholder circle did. */
-.hero-face picture,
-.hero-face img,
+.hero-face > picture,
+.hero-face > picture img,
 .hero-face > span {
-  width: 96px; height: 96px;
+  width: 124px; height: 124px;
   border-radius: 50%;
   object-fit: cover;
   flex: none;
@@ -636,6 +636,37 @@ svg.logo { width: 15px; height: 15px; }
 }
 .hero-face strong { display: block; font-size: 1.12rem; letter-spacing: -.015em; }
 .hero-face small { display: block; color: var(--text-faint); font-size: .84rem; margin-top: 4px; line-height: 1.45; }
+
+/* The degree line. A white tile behind the emblem, which is drawn for paper
+   in maroon and gold and disappears against a dark panel otherwise. */
+.hero-school {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 9px;
+  padding: 4px 10px 4px 4px;
+  border: 1px solid var(--border);
+  border-radius: 99px;
+  background: var(--surface-2);
+  font-size: .78rem;
+  color: var(--text-dim);
+  line-height: 1.3;
+}
+.hero-school img {
+  width: 22px; height: 22px;
+  flex: none;
+  border-radius: 50%;
+  background: #fff;
+  padding: 2px;
+  object-fit: contain;
+}
+.hero-school b { color: var(--text); font-weight: 600; }
+
+/* Under ~420px the card is tighter than the photo and the pill together. */
+@media (max-width: 420px) {
+  .hero-face > picture, .hero-face > picture img, .hero-face > span { width: 92px; height: 92px; }
+  .hero-school { font-size: .73rem; gap: 6px; }
+}
 
 /* --------------------------------------------------------------- metrics */
 /* Scoped to the hero: `.metrics` is also used inside project cards, where a

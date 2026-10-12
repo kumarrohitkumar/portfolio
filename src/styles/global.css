@@ -855,7 +855,6 @@ svg.logo { width: 15px; height: 15px; }
   color: var(--text-faint);
   white-space: nowrap;
 }
-.marquee-run i { color: var(--accent); font-style: normal; margin: 0 22px; }
 .marquee:hover .marquee-track { animation-play-state: paused; }
 
 @media (max-width: 920px) {
@@ -2021,12 +2020,44 @@ code.ic {
   margin-bottom: 14px;
 }
 .rail-hint {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 10px;
   font-family: var(--font-mono);
   font-size: .72rem;
   letter-spacing: .08em;
   text-transform: uppercase;
   color: var(--text-faint);
 }
+.rail-hint b { color: var(--accent); font-weight: 500; }
+.rail-hint em {
+  font-style: normal;
+  font-family: var(--font-sans);
+  font-size: .82rem;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--text);
+}
+
+/* One mark per group. An endless rail needs to say how much there is. */
+.rail-dots {
+  display: flex;
+  justify-content: center;
+  gap: 7px;
+  margin-top: 16px;
+}
+.rail-dots button {
+  width: 22px;
+  height: 4px;
+  padding: 0;
+  border: 0;
+  border-radius: 99px;
+  background: var(--border-strong);
+  cursor: pointer;
+  transition: background .25s, width .3s var(--ease);
+}
+.rail-dots button:hover { background: var(--text-faint); }
+.rail-dots button.on { width: 38px; background: var(--accent); }
 .rail-nav { display: flex; gap: 7px; }
 .rail-nav button {
   width: 34px; height: 34px;
@@ -2061,9 +2092,6 @@ code.ic {
   mask-image: linear-gradient(90deg, transparent, #000 26px, #000 calc(100% - 46px), transparent);
 }
 .skill-rail::-webkit-scrollbar { display: none; }
-.skill-rail.at-start { mask-image: linear-gradient(90deg, #000 90%, transparent); }
-.skill-rail.at-end { mask-image: linear-gradient(90deg, transparent, #000 26px); }
-.skill-rail.at-start.at-end { mask-image: none; }
 .skill-rail:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; border-radius: var(--radius); }
 
 .skill-rail .skill-card {
@@ -2081,6 +2109,15 @@ code.ic {
 @media (hover: none) and (pointer: coarse) {
   /* The shared touch rule sets a min-height; a circle needs the width to match. */
   .rail-nav button { width: 44px; height: 44px; }
+  /* A 4px bar is not a tap target; the padding gives it one without
+     making the marks themselves any taller. */
+  .rail-dots { gap: 2px; }
+  .rail-dots button {
+    height: 4px;
+    background-clip: content-box;
+    padding-block: 18px;
+    box-sizing: content-box;
+  }
 }
 
 /* The deal-in animation already keys off --card-i; off-screen cards in the
@@ -2088,3 +2125,21 @@ code.ic {
 @media (prefers-reduced-motion: reduce) {
   .skill-rail { scroll-behavior: auto; }
 }
+
+/* Marquee items carry their own mark, so the strip reads as tools rather
+   than a line of shouting text. */
+/* `.marquee-run > span` above already sets the mono uppercase treatment and
+   is the more specific selector, so this only adds the pill and the mark. */
+.marquee-run > span.marquee-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 15px;
+  margin-right: 10px;
+  border: 1px solid var(--border);
+  border-radius: 99px;
+  background: var(--surface);
+  transition: border-color .25s, color .25s;
+}
+.marquee-run > span.marquee-item:hover { border-color: var(--border-strong); color: var(--text); }
+.marquee-item .logo { flex: none; }

@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { liveDemos, profile } from '../data/profile'
 import { useCountUp, useInView, usePrefersReducedMotion } from '../lib/hooks'
+import { Logo } from '../lib/logos'
 import { Arrow, Download, External, Github, Linkedin, Mail, Pin } from '../lib/icons'
 
 /**
@@ -276,7 +277,12 @@ const TECH = [
   'Socket.IO', 'Idempotency', 'Saga rollback', 'pgvector', 'RAG', 'LLM agents',
 ]
 
-/** Duplicated once so the loop has no visible seam. */
+/**
+ * The stack, drifting past. Each name carries its own mark — the same icon
+ * resolver the skills section uses — so the strip reads as a row of tools
+ * rather than a line of shouting text. Duplicated once so the loop has no
+ * visible seam.
+ */
 function Marquee() {
   return (
     <div className="marquee" aria-hidden="true">
@@ -284,9 +290,9 @@ function Marquee() {
         {[0, 1].map(copy => (
           <span key={copy} className="marquee-run">
             {TECH.map(t => (
-              <span key={t}>
+              <span className="marquee-item" key={t}>
+                <Logo label={t} size={15} />
                 {t}
-                <i>·</i>
               </span>
             ))}
           </span>

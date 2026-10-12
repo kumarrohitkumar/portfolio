@@ -330,6 +330,26 @@ const GLYPHS: Record<string, Glyph> = {
       </>
     ),
   },
+  // Short forms used by the hero marquee, same marks as the full labels.
+  idempotency: {
+    hex: NEUTRAL,
+    body: (
+      <>
+        <path d="M20.5 12a8.5 8.5 0 1 1-2.6-6.1" />
+        <path d="M20.7 3.5v4.2h-4.2M8.8 12l2.3 2.3 4.3-4.6" />
+      </>
+    ),
+  },
+  sagarollback: {
+    hex: NEUTRAL,
+    body: (
+      <>
+        <path d="M3.5 12a8.5 8.5 0 1 0 2.6-6.1" />
+        <path d="M3.3 3.5v4.2h4.2" />
+        <path d="M12 8v4.4l3 1.8" />
+      </>
+    ),
+  },
   idempotencyexactlyonce: {
     hex: NEUTRAL,
     body: (

@@ -421,84 +421,205 @@ export function Skills() {
   )
 }
 
+const RAIL_COPIES = 3
+
 /**
- * The eight groups as a horizontal rail rather than a grid. It reads as one
- * continuous toolkit instead of a wall, takes a third of the height, and on a
- * phone it is a native swipe. Scroll snapping keeps a card aligned wherever
- * the reader stops.
+ * The eight groups as a rail that never ends. Three copies are rendered and
+ * the view sits on the middle one; when the reader scrolls past a copy
+ * boundary the position jumps back by exactly one set. The jump is the same
+ * pixels as the content, so it cannot be seen — the rail just keeps going.
+ *
+ * Movement is always "scroll to this card's left edge", never "scroll by a
+ * guessed width", because a guess drifts a little each time and the cards end up
+ * sitting half out of frame.
  */
 function SkillRail() {
   const railRef = useRef<HTMLDivElement>(null)
-  const [atStart, setAtStart] = useState(true)
-  const [atEnd, setAtEnd] = useState(false)
+  const setWidthRef = useRef(0)
+  const [active, setActive] = useState(0)
+  const reduced = usePrefersReducedMotion()
 
-  const sync = useCallback(() => {
+  const cards = () =>
+    Array.from(railRef.current?.querySelectorAll<HTMLElement>('.skill-card') ?? [])
+
+  const measure = useCallback(() => {
     const el = railRef.current
-    if (!el) return
-    // A pixel of slack: sub-pixel widths mean scrollLeft rarely hits the end
-    // exactly, and the arrow would stay enabled forever.
-    setAtStart(el.scrollLeft <= 1)
-    setAtEnd(el.scrollLeft >= el.scrollWidth - el.clientWidth - 1)
+    if (!el) return 0
+    // scrollWidth / 3 is a few pixels out: 24 cards have 23 gaps, not 24.
+    // The distance to a card's twin one set later is exact.
+    const all = cards()
+    const twin = all[skills.length]
+    const width = twin ? twin.offsetLeft - all[0].offsetLeft : el.scrollWidth / RAIL_COPIES
+    setWidthRef.current = width
+    return width
   }, [])
 
   useEffect(() => {
-    sync()
     const el = railRef.current
     if (!el) return undefined
-    const onResize = () => sync()
-    window.addEventListener('resize', onResize)
-    return () => window.removeEventListener('resize', onResize)
-  }, [sync])
 
-  const nudge = (direction: 1 | -1) => {
+    const place = () => {
+      const width = measure()
+      if (!width) return
+      const previous = el.style.scrollBehavior
+      el.style.scrollBehavior = 'auto'
+      el.scrollLeft = width
+      el.style.scrollBehavior = previous
+      indexRef.current = skills.length
+    }
+
+    place()
+    window.addEventListener('resize', place)
+    return () => window.removeEventListener('resize', place)
+  }, [measure])
+
+  /** The card closest to the left edge, as an index into `skills`. */
+  const nearest = useCallback(() => {
     const el = railRef.current
-    if (!el) return
-    const card = el.querySelector<HTMLElement>('.skill-card')
-    // One card plus the gap, so a press always lands on a card edge.
-    const step = card ? card.offsetWidth + 14 : el.clientWidth * 0.8
-    el.scrollBy({ left: step * direction, behavior: 'smooth' })
+    const all = cards()
+    if (!el || !all.length) return { index: 0, group: 0 }
+
+    let best = 0
+    let bestGap = Infinity
+    all.forEach((card, i) => {
+      const gap = Math.abs(card.offsetLeft - el.scrollLeft)
+      if (gap < bestGap) { bestGap = gap; best = i }
+    })
+    return { index: best, group: best % skills.length }
+  }, [])
+
+  /**
+   * Where we are heading. Reading the live scroll position instead would
+   * sample a smooth scroll mid-flight, so two quick presses on the arrow
+   * would both aim at the same card and the rail would end up misaligned.
+   */
+  const indexRef = useRef(skills.length)
+  const settleRef = useRef<number | undefined>(undefined)
+
+  /** Keep the reader inside the middle copy, invisibly, and track the group. */
+  const onScroll = useCallback(() => {
+    const el = railRef.current
+    const width = setWidthRef.current || measure()
+    if (!el || !width) return
+
+    setActive(nearest().group)
+
+    // Once the scroll has stopped, trust the position again — this is what
+    // picks up a swipe or a trackpad scroll the arrows knew nothing about.
+    window.clearTimeout(settleRef.current)
+    settleRef.current = window.setTimeout(() => {
+      indexRef.current = nearest().index
+    }, 140)
+
+    let shift = 0
+    if (el.scrollLeft < width * 0.5) shift = width
+    else if (el.scrollLeft > width * 1.5) shift = -width
+    if (!shift) return
+
+    // Snapping fights an instant jump, so it is off for that one frame.
+    const snap = el.style.scrollSnapType
+    const behavior = el.style.scrollBehavior
+    el.style.scrollSnapType = 'none'
+    el.style.scrollBehavior = 'auto'
+    el.scrollLeft += shift
+    el.style.scrollSnapType = snap
+    el.style.scrollBehavior = behavior
+    // The jump moved us a whole set, so the index we are heading to moved too.
+    indexRef.current += shift > 0 ? skills.length : -skills.length
+  }, [measure, nearest])
+
+  useEffect(() => () => window.clearTimeout(settleRef.current), [])
+
+  /** Scroll to an exact card, so nothing ever lands half out of frame. */
+  const scrollToCard = (index: number) => {
+    const el = railRef.current
+    const all = cards()
+    const clamped = Math.max(0, Math.min(all.length - 1, index))
+    const card = all[clamped]
+    if (!el || !card) return
+    indexRef.current = clamped
+    el.scrollTo({ left: card.offsetLeft, behavior: reduced ? 'auto' : 'smooth' })
+  }
+
+  const nudge = (direction: 1 | -1) => scrollToCard(indexRef.current + direction)
+
+  /** Jump to a group in whichever copy is nearest, so the move stays short. */
+  const goToGroup = (group: number) => {
+    const here = indexRef.current
+    const copy = Math.floor(here / skills.length)
+    const candidates = [copy - 1, copy, copy + 1]
+      .filter(c => c >= 0 && c < RAIL_COPIES)
+      .map(c => c * skills.length + group)
+    const target = candidates.reduce((a, b) =>
+      Math.abs(b - here) < Math.abs(a - here) ? b : a)
+    scrollToCard(target)
   }
 
   return (
     <div className="rail-wrap">
       <div className="rail-head">
-        <span className="rail-hint">{skills.length} groups · scroll or swipe</span>
+        <span className="rail-hint">
+          <b>{String(active + 1).padStart(2, '0')}</b> / {String(skills.length).padStart(2, '0')}
+          <em>{skills[active].group}</em>
+        </span>
         <div className="rail-nav">
-          <button onClick={() => nudge(-1)} disabled={atStart} aria-label="Previous skills">
+          <button onClick={() => nudge(-1)} aria-label="Previous group">
             <Chevron size={16} />
           </button>
-          <button onClick={() => nudge(1)} disabled={atEnd} aria-label="More skills">
+          <button onClick={() => nudge(1)} aria-label="Next group">
             <Chevron size={16} />
           </button>
         </div>
       </div>
 
       <div
-        className={`skill-rail${atStart ? ' at-start' : ''}${atEnd ? ' at-end' : ''}`}
+        className="skill-rail"
         ref={railRef}
-        onScroll={sync}
+        onScroll={onScroll}
         tabIndex={0}
         role="group"
         aria-label="Skills, scrollable sideways"
       >
+        {Array.from({ length: RAIL_COPIES }).flatMap((_, copy) =>
+          skills.map((s, i) => (
+            <div
+              className="skill-card"
+              key={`${copy}-${s.group}`}
+              style={{ '--card-i': i } as CSSProperties}
+              // Only the middle copy is announced; the other two exist to make
+              // the loop seamless, not to be read out three times.
+              aria-hidden={copy === 1 ? undefined : true}
+            >
+              <h3>{s.group}<span>{String(i + 1).padStart(2, '0')}</span></h3>
+              <ul className="pills">
+                {s.items.map((item, j) => (
+                  <li
+                    className="pill"
+                    key={item}
+                    style={{ '--pill-i': Math.min(j, 9) } as CSSProperties}
+                  >
+                    <Logo label={item} />
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )),
+        )}
+      </div>
+
+      {/* One mark per group, so the rail says how much there is and where
+          you are — an endless rail needs that more than a finite one. */}
+      <div className="rail-dots" role="tablist" aria-label="Skill groups">
         {skills.map((s, i) => (
-          <div className="skill-card" key={s.group} style={{ '--card-i': i } as CSSProperties}>
-            <h3>{s.group}<span>{String(i + 1).padStart(2, '0')}</span></h3>
-            <ul className="pills">
-              {s.items.map((item, j) => (
-                <li
-                  className="pill"
-                  key={item}
-                  // Capped: a long group should not still be dealing itself
-                  // out half a second after the card arrived.
-                  style={{ '--pill-i': Math.min(j, 9) } as CSSProperties}
-                >
-                  <Logo label={item} />
-                  <span>{item}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
+          <button
+            key={s.group}
+            role="tab"
+            aria-selected={i === active}
+            aria-label={s.group}
+            className={i === active ? 'on' : undefined}
+            onClick={() => goToGroup(i)}
+          />
         ))}
       </div>
     </div>

@@ -1825,3 +1825,18 @@ code.ic {
 
 @media (prefers-reduced-motion: reduce) {.reveal.in .system, .reveal.in .systems-head { animation: none !important; }
 }
+
+/* ------------------------------------------- hero: the rotating promise line */
+.promise { display: inline-grid; vertical-align: bottom; }
+.promise-item {
+  grid-area: 1 / 1;
+  opacity: 0; transform: translateY(.38em); filter: blur(6px);
+  transition: opacity .55s var(--ease), transform .55s var(--ease), filter .55s var(--ease);
+}
+.promise-item.is-on { opacity: 1; transform: none; filter: none; }
+/* The phrase leaving moves up and out, so the change reads as a sequence. */
+.promise-item:not(.is-on) { transform: translateY(-.32em); }
+.hero-intro strong { color: var(--text); font-weight: 600; }
+@media (prefers-reduced-motion: reduce) {
+  .promise-item { transition: none; filter: none; }
+}

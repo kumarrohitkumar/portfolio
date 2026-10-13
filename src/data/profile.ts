@@ -41,9 +41,13 @@ export const profile = {
   roleLine: 'Software Development Engineer I at Infinite Locus',
   tagline: 'I build systems that do not lose your data.',
   intro:
-    'Payment flows, order pipelines and cross-platform sync — the parts of a ' +
-    'product that are expensive to get wrong. Go, Python and Node underneath; ' +
-    'React and TypeScript on top when the work needs a screen too.',
+    'Backend engineer at Infinite Locus, building the parts of a product that are ' +
+    'expensive to get wrong: **Kafka sync** between two platforms that both think they are ' +
+    'the source of truth, a reversible migration across **32M records**, and **15+ bots** ' +
+    'running in production. Go, Python and Node on the server; React and TypeScript when ' +
+    'the work needs a screen.',
+  /** The hero headline's second line cycles through these; each is backed by a project on the page. */
+  promises: ['never lose your data', 'never charge twice', 'survive a crash mid-write'],
 
   location: 'Gurugram, India',
   hometown: 'Bharatpur, Rajasthan',
@@ -120,7 +124,7 @@ export const liveDemos = [
   },
   {
     name: 'Finishh Club',
-    what: 'Mutual funds and stocks in plain English',
+    what: 'AI chat assistant for mutual funds',
     href: 'https://finishh-club.vercel.app',
     login: '',
   },
@@ -378,8 +382,9 @@ export const projects: Project[] = [
     title: 'Finishh Club',
     period: '2026 — in progress · Personal',
     blurb:
-      'Explains Indian mutual funds, IPOs and stocks in plain English, with an ' +
-      'assistant built so it can never give investment advice.',
+      'An AI-powered guide to Indian mutual funds. Open any of 200 funds to see how it ' +
+      'has really performed, then ask Isaa, the built-in AI chat assistant, anything in ' +
+      'plain English. It answers from real market data, and never tells you what to buy.',
     description: [
       '**Real data, guarded.** 200 funds and **290,000 daily price points** from ' +
         'AMFI, behind a guard that refuses to write an incomplete source file.',

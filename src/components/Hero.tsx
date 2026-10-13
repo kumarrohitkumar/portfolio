@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { liveDemos, profile } from '../data/profile'
 import { useCountUp, useInView, usePrefersReducedMotion } from '../lib/hooks'
 import { Logo } from '../lib/logos'
+import { Mark } from './Common'
 import { Arrow, Download, External, Github, Linkedin, Mail, Pin } from '../lib/icons'
 
 /**
@@ -58,6 +59,36 @@ const transcript: { prompt?: boolean; parts: { text: string; tone?: string }[] }
   },
 ]
 
+/** How long each promise stays before the next slides in. */
+const PROMISE_HOLD_MS = 2600
+
+/**
+ * The headline's second line, cycling through what the systems guarantee. Every
+ * phrase sits in the same grid cell, so the line keeps the width of the longest
+ * one and nothing below it moves. With reduced motion it simply stays on the first.
+ */
+function RotatingPromise({ phrases }: { phrases: readonly string[] }) {
+  const reduced = usePrefersReducedMotion()
+  const [i, setI] = useState(0)
+  useEffect(() => {
+    if (reduced || phrases.length < 2) return
+    const id = window.setInterval(() => {
+      if (!document.hidden) setI(n => (n + 1) % phrases.length)
+    }, PROMISE_HOLD_MS)
+    return () => window.clearInterval(id)
+  }, [reduced, phrases.length])
+
+  return (
+    <span className="promise">
+      {phrases.map((p, n) => (
+        <span key={p} className={`gradient-text promise-item${n === i ? ' is-on' : ''}`}>
+          {p}
+        </span>
+      ))}
+    </span>
+  )
+}
+
 export function Hero() {
   const [photoOk, setPhotoOk] = useState(true)
   const initials = profile.name.split(' ').map(w => w[0]).join('')
@@ -69,13 +100,15 @@ export function Hero() {
 
       <div className="wrap hero-inner">
         <div className="hero-copy">
-          <h1 className="hero-title">
-            I build systems that
-            <br />
-            <span className="gradient-text">never lose your data</span>
+          <h1 className="hero-title" aria-label={`I build systems that ${profile.promises.join(', ')}`}>
+            <span aria-hidden="true">
+              I build systems that
+              <br />
+              <RotatingPromise phrases={profile.promises} />
+            </span>
           </h1>
 
-          <p className="hero-intro">{profile.intro}</p>
+          <p className="hero-intro"><Mark text={profile.intro} /></p>
 
           <div className="hero-actions">
             <a className="btn btn-primary" href="#projects">

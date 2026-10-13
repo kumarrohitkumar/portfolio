@@ -70,6 +70,17 @@ export const profile = {
   codeforces: 'https://codeforces.com/profile/astupid',
 
   resume: 'Rohit-Kumar-Resume.pdf',
+  /**
+   * What the "Copy link" control hands out. Leave it empty and the control
+   * resolves `resume` against whatever origin the site is served from, which
+   * is correct on every deployment without being edited.
+   *
+   * Point it at a hosted copy — a Google Drive file shared with "Anyone with
+   * the link", say — only once that link opens for a signed-out visitor. A
+   * private link, or a link to a Drive *folder* rather than the file, sends
+   * the reader to a sign-in page or a file browser instead of the PDF.
+   */
+  resumeUrl: '',
   // Drop a square photo at public/photo.jpg. Until then the site shows your
   // initials in a styled monogram, which looks deliberate rather than missing.
   /** WebP with a JPEG fallback; the hero falls back again to a monogram. */

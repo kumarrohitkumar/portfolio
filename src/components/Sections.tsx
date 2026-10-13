@@ -630,12 +630,17 @@ function AchievementCard({ a, i }: { a: (typeof achievements)[number]; i: number
 /* ----------------------------------------------------------------- contact */
 export function Contact() {
   const { copied, copy } = useCopy()
+  // A second instance: one shared flag would light both controls at once.
+  const { copied: linkCopied, copy: copyLink } = useCopy()
   const hasLinkedin = !profile.linkedin.includes('REPLACE-ME')
   // Only render the form when a service is actually wired up. Without one the
   // right-hand column used to be a short card advertising a second mailto,
   // which left a hole beside the links and three doors to the same inbox.
   const hasForm = Boolean(profile.formEndpoint)
   const subject = encodeURIComponent('Work enquiry for Rohit')
+  // Resolved at click time, not at build time: the same build is served from
+  // localhost and from the real domain, and each should copy its own URL.
+  const resumeLink = () => profile.resumeUrl || new URL(profile.resume, window.location.href).href
 
   return (
     <Band id="contact">
@@ -682,15 +687,25 @@ export function Contact() {
             )}
 
             {/* Third row, and the one a recruiter reaches for: it also squares
-                this column off against the button and the copy row opposite. */}
-            <a className="contact-row" style={{ '--card-i': 2 } as CSSProperties} href={profile.resume} download>
-              <span className="ic"><Download /></span>
-              <span>
-                <span className="k" style={{ display: 'block' }}>Resume</span>
-                <span className="v">Download the PDF</span>
-              </span>
-              <span className="go"><Arrow size={15} /></span>
-            </a>
+                this column off against the button and the copy row opposite.
+                Two controls, so the copy button is a sibling of the link and
+                not nested inside it. */}
+            <div className="contact-row contact-row-split" style={{ '--card-i': 2 } as CSSProperties}>
+              <a className="cr-main" href={profile.resume} download>
+                <span className="ic"><Download /></span>
+                <span>
+                  <span className="k" style={{ display: 'block' }}>Resume</span>
+                  <span className="v">Download the PDF</span>
+                </span>
+              </a>
+              <button
+                className="cr-copy"
+                onClick={() => copyLink(resumeLink())}
+                aria-label="Copy a link to the resume"
+              >
+                {linkCopied ? <><Check size={13} /> Copied</> : 'Copy link'}
+              </button>
+            </div>
           </div>
         )}
       </div>

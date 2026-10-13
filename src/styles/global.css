@@ -340,6 +340,39 @@ h1, h2, h3, h4 { line-height: 1.15; letter-spacing: -0.022em; font-weight: 640; 
 .contact-row .v { font-size: .93rem; font-weight: 520; word-break: break-all; }
 .contact-row .go { margin-left: auto; color: var(--text-faint); flex: none; }
 
+/* The resume row carries two controls. The link keeps the row's padding so
+   the whole left side stays clickable; the row itself only draws the border. */
+.contact-row-split { padding: 0; gap: 0; }
+.contact-row-split .cr-main {
+  display: flex; align-items: center; gap: 14px;
+  flex: 1; min-width: 0; padding: 15px 18px;
+}
+.cr-copy {
+  flex: none;
+  align-self: stretch;
+  padding: 0 16px;
+  border: 0; border-left: 1px solid var(--border);
+  background: none;
+  cursor: pointer;
+  font-size: .78rem; font-weight: 560; color: var(--text-faint);
+  display: inline-flex; align-items: center; gap: 5px;
+  transition: color .2s, background .2s;
+}
+.cr-copy:hover { color: var(--accent); background: var(--surface-2); }
+.contact-row-split:hover { transform: none; }
+.contact-row-split:focus-within, .contact-row-split:hover { border-color: var(--accent); }
+
+@media (max-width: 560px) {
+  /* Side by side, the two controls leave the filename no room. */
+  .contact-row-split { flex-wrap: wrap; }
+  .cr-main { width: 100%; flex-basis: 100%; }
+  .cr-copy {
+    width: 100%; justify-content: center;
+    align-self: auto; min-height: 44px;
+    border-left: 0; border-top: 1px solid var(--border);
+  }
+}
+
 /* One primary action, then the address for people who keep their own client
    open. The two together stand as tall as the three rows beside them. */
 .contact-cta { width: 100%; justify-content: center; padding-block: 15px; font-size: 1rem; }

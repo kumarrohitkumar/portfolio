@@ -69,11 +69,6 @@ export function Hero() {
 
       <div className="wrap hero-inner">
         <div className="hero-copy">
-          <span className="status">
-            <span className="dot" aria-hidden="true" />
-            {profile.availability}
-          </span>
-
           <h1 className="hero-title">
             I build systems that
             <br />

@@ -60,7 +60,6 @@ export const profile = {
     institute: 'IIT (BHU) Varanasi',
     logo: 'logos/iit-bhu.png',
   },
-  availability: 'Open to software engineering roles and selected freelance work',
 
   // ------------------------------------------------------------------- links
   email: 'rk8091267@gmail.com',

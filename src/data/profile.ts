@@ -123,6 +123,12 @@ export const liveDemos = [
     login: 'student@jobconnect.dev / Demo@1234',
   },
   {
+    name: 'Barber Pro',
+    what: 'Barber shop website with online booking',
+    href: 'https://barber-pro-rk.vercel.app',
+    login: 'owner@example.com / demo-password-123',
+  },
+  {
     name: 'Finishh Club',
     what: 'AI chat assistant for mutual funds',
     href: 'https://finishh-club.vercel.app',
@@ -417,6 +423,7 @@ export const projects: Project[] = [
     shots: [
       { src: 'shots/b1-home.webp', label: 'Website', alt: 'The barber shop website: headline, booking button and live open-now status' },
       { src: 'shots/b2-book.webp', label: 'Booking', alt: 'Online booking: pick a date and one of the free time slots' },
+      { src: 'shots/b3-dash.webp', label: 'Owner',   alt: "The owner's dashboard: the day's bookings, totals and actions" },
     ],
     title: 'Barber Pro',
     period: '2026 · Personal product',
@@ -446,6 +453,10 @@ export const projects: Project[] = [
       'Next.js', 'TypeScript', 'Fastify', 'PostgreSQL', 'Prisma', 'AWS Lambda', 'Playwright', 'Tailwind CSS',
     ],
     tags: ['Personal', 'Full Stack'],
+    links: [
+      { label: 'Live demo', href: 'https://barber-pro-rk.vercel.app' },
+    ],
+    demo: { label: 'Owner dashboard', value: 'owner@example.com / demo-password-123' },
   },
   {
     slug: 'job-portal',

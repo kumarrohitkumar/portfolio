@@ -413,6 +413,41 @@ export const projects: Project[] = [
     demo: { label: 'Open it', value: 'No sign-in needed' },
   },
   {
+    slug: 'barber-pro',
+    shots: [
+      { src: 'shots/b1-home.webp', label: 'Website', alt: 'The barber shop website: headline, booking button and live open-now status' },
+      { src: 'shots/b2-book.webp', label: 'Booking', alt: 'Online booking: pick a date and one of the free time slots' },
+    ],
+    title: 'Barber Pro',
+    period: '2026 · Personal product',
+    blurb:
+      'A ready-to-sell website and online booking system for barber shops. Customers ' +
+      'see prices and photos and book a free slot from their phone; the owner runs the ' +
+      'day from a dashboard. One customised copy per shop.',
+    description: [
+      '**No double booking.** Every booking takes a database lock for its date and ' +
+        're-checks the slot before saving. **10 customers racing for the last chair: ' +
+        'exactly 1 gets it**, and a test proves it.',
+      '**A real slot engine.** Free times respect chair count, service length, opening ' +
+        'hours, lunch breaks, holidays, minimum notice and the booking window.',
+      '**An owner dashboard that works on a phone.** Day view with totals, walk-ins and ' +
+        'phone bookings, no-shows, prices, hours, holidays and photos. A price change ' +
+        'reaches the website straight away.',
+      '**Built to hand over.** **49 tests** (39 API, 10 browser on mobile and desktop), ' +
+        'three themes, SEO with structured data, and a serverless AWS template so each ' +
+        'shop runs for about **₹1,000–2,000 a year**.',
+    ],
+    metrics: [
+      { value: '49', label: 'automated tests' },
+      { value: '1 of 10', label: 'racing bookings wins' },
+      { value: '3', label: 'themes, one codebase' },
+    ],
+    stack: [
+      'Next.js', 'TypeScript', 'Fastify', 'PostgreSQL', 'Prisma', 'AWS Lambda', 'Playwright', 'Tailwind CSS',
+    ],
+    tags: ['Personal', 'Full Stack'],
+  },
+  {
     slug: 'job-portal',
     shots: [
       { src: 'shots/j1-board.webp', label: 'Job board', alt: 'The job board with filters, salaries and locations' },

@@ -123,6 +123,12 @@ export const liveDemos = [
     login: 'student@jobconnect.dev / Demo@1234',
   },
   {
+    name: 'Parlour Pro',
+    what: 'Bridal studio site with wedding-date booking',
+    href: 'https://parlour-pro-rk.vercel.app',
+    login: 'owner@example.com / demo-password-123',
+  },
+  {
     name: 'Barber Pro',
     what: 'Barber shop website with online booking',
     href: 'https://barber-pro-rk.vercel.app',
@@ -417,6 +423,45 @@ export const projects: Project[] = [
       { label: 'GitHub', href: 'https://github.com/kumarrohitkumar/finishh-club' },
     ],
     demo: { label: 'Open it', value: 'No sign-in needed' },
+  },
+  {
+    slug: 'parlour-pro',
+    shots: [
+      { src: 'shots/pa1-home.webp', label: 'Website', alt: 'Bridal studio home page with an arched bridal portrait and the next open wedding date' },
+      { src: 'shots/pa2-dates.webp', label: 'Wedding dates', alt: 'Month calendar of open and booked wedding dates beside the enquiry form' },
+      { src: 'shots/pa3-enquiries.webp', label: 'Owner', alt: "The owner's enquiries dashboard with a confirmed booking and a month calendar" },
+    ],
+    title: 'Parlour Pro',
+    period: '2026 · Personal product',
+    blurb:
+      'A website and booking system for bridal and beauty studios. Brides see which ' +
+      'wedding dates are still open and send an enquiry; everyday clients book threading, ' +
+      'facials or hair in a free slot. The owner confirms dates from a phone.',
+    description: [
+      '**Two kinds of booking in one product.** Salon services book an exact slot; ' +
+        'bridal and party makeup is booked by date, because an artist gives a whole ' +
+        'morning to one function.',
+      '**A date can never be overbooked.** Confirming takes a database lock on that date ' +
+        'and re-counts. **10 owners confirming the last slot at once: exactly 1 wins**, ' +
+        'and a test proves the lock is what makes it pass.',
+      '**Live availability.** A confirm or cancel refreshes the website calendar ' +
+        'straight away, and the home page always shows the next open wedding date.',
+      '**Built for phones.** Tested end to end on iPhone Safari and Android Chrome: the ' +
+        'bride enquires, the owner confirms, the date shows as booked. **88 API tests.**',
+    ],
+    metrics: [
+      { value: '88', label: 'API tests' },
+      { value: '1 of 10', label: 'racing confirms wins' },
+      { value: '2', label: 'booking modes, one system' },
+    ],
+    stack: [
+      'Next.js', 'TypeScript', 'Fastify', 'PostgreSQL', 'Prisma', 'Neon', 'Vercel', 'Playwright',
+    ],
+    tags: ['Personal', 'Full Stack'],
+    links: [
+      { label: 'Live demo', href: 'https://parlour-pro-rk.vercel.app' },
+    ],
+    demo: { label: 'Owner dashboard', value: 'owner@example.com / demo-password-123' },
   },
   {
     slug: 'barber-pro',

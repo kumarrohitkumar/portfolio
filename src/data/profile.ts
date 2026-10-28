@@ -177,10 +177,12 @@ export const experience = [
         'subscriptions up **28%**.',
       'Implemented **Firebase Authentication** with **JWT** authorisation for secure ' +
         'login and session management.',
+      'Integrated **REST APIs** with **Redux Toolkit**, handling loading, error and ' +
+        'auth states across the app; shipped releases on **Firebase Hosting**.',
       'Built a reusable, responsive component library with **Tailwind CSS** and ' +
         '**shadcn/ui**, improving cross-device usability and maintainability.',
     ],
-    stack: ['React', 'JavaScript', 'Firebase', 'JWT', 'Tailwind CSS', 'shadcn/ui'],
+    stack: ['React', 'JavaScript', 'Redux Toolkit', 'Firebase', 'JWT', 'Tailwind CSS', 'shadcn/ui'],
   },
 ] as const
 
@@ -590,15 +592,15 @@ export const projects: Project[] = [
 // --------------------------------------------------------------------- skills
 export const skills = [
   { group: 'Languages',        items: ['Go', 'Python', 'JavaScript', 'TypeScript', 'C++', 'SQL'] },
-  { group: 'Backend',          items: ['Go (Gin)', 'Node.js', 'Express.js', 'FastAPI', 'Flask', 'SQLAlchemy', 'REST APIs', 'Microservices', 'WebSockets (Socket.IO)'] },
+  { group: 'Backend',          items: ['Go (Gin)', 'Node.js', 'Express.js', 'FastAPI', 'Flask', 'SQLAlchemy', 'Pydantic', 'REST APIs', 'Microservices', 'WebSockets (Socket.IO)'] },
   { group: 'Frontend',         items: ['React', 'TypeScript', 'Vite', 'Tailwind CSS', 'shadcn/ui', 'daisyUI', 'Zustand', 'React Router', 'Responsive layout', 'Accessibility', 'Socket.IO client'] },
   { group: 'Data & Messaging', items: ['MySQL', 'PostgreSQL', 'MongoDB (aggregation, indexing)', 'Redis (locks, Pub/Sub, caching)', 'Kafka', 'AWS SNS/SQS'] },
-  { group: 'Cloud & DevOps',   items: ['AWS EC2', 'AWS ECS', 'AWS ECR', 'AWS S3', 'AWS Lambda', 'CloudWatch', 'EventBridge', 'Docker', 'Git', 'GitHub Actions', 'CI/CD', 'Nginx', 'Playwright'] },
+  { group: 'Cloud & DevOps',   items: ['AWS EC2', 'AWS ECS', 'AWS ECR', 'AWS S3', 'AWS Lambda', 'CloudWatch', 'EventBridge', 'Docker', 'Kubernetes', 'Git', 'GitHub Actions', 'CI/CD', 'Nginx', 'Playwright'] },
   // Split in two: twenty items in one card dwarfed every other group and
   // made the grid look accidental. These are also two different skills.
   { group: 'LLM & Agents',     items: ['LLM Agents', 'Tool / Function Calling', 'Agentic Workflows', 'Prompt Engineering', 'Context Management', 'Streaming Responses', 'Token & Cost Optimisation', 'LangChain', 'Groq', 'Google Gemini', 'OpenAI-compatible APIs'] },
   { group: 'Retrieval & Evals', items: ['RAG', 'Vector Databases', 'pgvector', 'Embeddings', 'Semantic Search', 'Chunking Strategies', 'Guardrails', 'LLM Evals', 'Hallucination Testing'] },
-  { group: 'Engineering',      items: ['Distributed systems', 'System design (HLD/LLD)', 'Idempotency & exactly-once', 'Saga / compensating rollback', 'Data migrations', 'Testing & CI', 'OOP', 'DBMS', 'Computer networks', 'DSA'] },
+  { group: 'Engineering',      items: ['Distributed systems', 'System design (HLD/LLD)', 'Idempotency & exactly-once', 'Saga / compensating rollback', 'Data migrations', 'Testing & CI', 'AI-assisted development (Claude Code, Cursor, Copilot)', 'OOP', 'DBMS', 'Computer networks', 'DSA'] },
 ]
 // --------------------------------------------------------------- achievements
 // `logos` are brand marks shown on the card; `stat` counts up when the card scrolls in.

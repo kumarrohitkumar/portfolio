@@ -66,7 +66,7 @@ export const profile = {
   },
 
   // ------------------------------------------------------------------- links
-  email: 'rk8091267@gmail.com',
+  email: 'rohitkumarflow@gmail.com',
   github: 'https://github.com/kumarrohitkumar',
   // All three were read out of the link annotations in Rohit-Kumar-Resume.pdf.
   linkedin: 'https://www.linkedin.com/in/rohit-kumar-02764520b',
